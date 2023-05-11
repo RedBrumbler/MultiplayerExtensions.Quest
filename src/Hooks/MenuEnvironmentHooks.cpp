@@ -57,14 +57,15 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
 
             MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, previewBeatmapLevel, beatmapDifficulty, beatmapCharacteristic, difficultyBeatmap, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, useTestNoteCutSoundEffects);
 
-            auto& scenes = self->scenes;
-            auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->sceneName->Contains("Multiplayer"); });
+            auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
             if (multiScene) {
                 ListW<::GlobalNamespace::SceneInfo*> newScenes = List<::GlobalNamespace::SceneInfo*>::New_ctor();
-                newScenes->EnsureCapacity(scenes.size() + 1);
-                for (auto info : scenes) newScenes->Add(info);
+                newScenes->EnsureCapacity(self->scenes.size() + 1);
+                for (auto info : self->scenes) newScenes->Add(info);
                 newScenes->Add(originalEnvironmentInfo->get_sceneInfo());
-                scenes = newScenes->ToArray();
+                self->scenes = newScenes->ToArray();
+            } else {
+                DEBUG("No multiplayer scene found");
             }
 
             // postfix, restore original info
@@ -79,7 +80,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
 MAKE_AUTO_HOOK_MATCH(StandardLevelScenesTransitionSetupDataSO_Init, &::GlobalNamespace::StandardLevelScenesTransitionSetupDataSO::Init, void, GlobalNamespace::StandardLevelScenesTransitionSetupDataSO* self, StringW gameMode, GlobalNamespace::IDifficultyBeatmap* difficultyBeatmap, GlobalNamespace::IPreviewBeatmapLevel* previewBeatmapLevel, GlobalNamespace::OverrideEnvironmentSettings* overrideEnvironmentSettings, GlobalNamespace::ColorScheme *overrideColorScheme, GlobalNamespace::GameplayModifiers *gameplayModifiers, GlobalNamespace::PlayerSpecificSettings *playerSpecificSettings, GlobalNamespace::PracticeSettings *practiceSettings, StringW backButtonText, bool useTestNoteCutSoundEffects, bool startPaused, GlobalNamespace::BeatmapDataCache* beatmapDataCache) {
     StandardLevelScenesTransitionSetupDataSO_Init(self, gameMode, difficultyBeatmap, previewBeatmapLevel, overrideEnvironmentSettings, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, backButtonText, useTestNoteCutSoundEffects, startPaused, beatmapDataCache);
     auto& scenes = self->scenes;
-    auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->sceneName->Contains("Multiplayer"); });
+    auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
     if (multiScene) {
         ListW<::GlobalNamespace::SceneInfo*> newScenes = List<::GlobalNamespace::SceneInfo*>::New_ctor();
         newScenes->EnsureCapacity(scenes.size() + 1);

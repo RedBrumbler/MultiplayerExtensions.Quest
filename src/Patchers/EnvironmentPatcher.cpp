@@ -33,8 +33,9 @@ namespace MultiplayerExtensions::Patchers {
     }
 
     void EnvironmentPatcher::PreventEnvironmentInjection(Zenject::SceneDecoratorContext* instance, ListW<UnityEngine::MonoBehaviour*> monoBehaviours, Zenject::DiContainer* container) {
-        auto scene = instance->get_gameObject()->get_scene();
-        if (config.soloEnvironment && _scenesManager->IsSceneInStack("MultiplayerEnvironment")) {
+        bool inStack = _scenesManager->IsSceneInStack("MultiplayerEnvironment");
+        if (config.soloEnvironment && inStack) {
+            auto scene = instance->get_gameObject()->get_scene();
             auto sceneName = scene.get_name();
             INFO("Fixing bind conflicts on scene '{}'.", sceneName);
             ListW<UnityEngine::MonoBehaviour*> removedBehaviours = List<UnityEngine::MonoBehaviour*>::New_ctor();
@@ -43,12 +44,8 @@ namespace MultiplayerExtensions::Patchers {
                 for (auto mb : monoBehaviours) {
                     auto binding = il2cpp_utils::try_cast<Zenject::ZenjectBinding>(mb).value_or(nullptr);
                     if (binding) {
-                        for (auto c : binding->components) {
-                            if (il2cpp_utils::try_cast<GlobalNamespace::LightWithIdManager>(c).has_value()) {
-                                removedBehaviours->Add(mb);
-                                break;
-                            }
-                        }
+                        auto lightWithIdManagerItr = std::find_if(binding->components.begin(), binding->components.end(), [](auto c){ return il2cpp_utils::try_cast<GlobalNamespace::LightWithIdManager>(c).has_value(); });
+                        if (lightWithIdManagerItr != binding->components.end()) removedBehaviours->Add(mb);
                     }
                 }
             }
@@ -70,7 +67,6 @@ namespace MultiplayerExtensions::Patchers {
         } else {
             _behavioursToInject->Clear();
         }
-
     }
 
     void EnvironmentPatcher::PreventEnvironmentInstall(Zenject::SceneDecoratorContext* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> monoInstallers, ListW<Zenject::MonoInstaller*> installerPrefabs) {
