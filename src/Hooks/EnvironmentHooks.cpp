@@ -52,27 +52,18 @@ MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
         // prefix
+        // prefix
+        if (il2cpp_utils::try_cast<GameObjectContext>(self).has_value())
+            patcher->LoveYouCountersPlus(reinterpret_cast<GameObjectContext*>(self));
+        else if (il2cpp_utils::try_cast<SceneDecoratorContext>(self).has_value())
+            patcher->PreventEnvironmentInstall(reinterpret_cast<SceneDecoratorContext*>(self), self->normalInstallers, self->normalInstallerTypes, self->scriptableObjectInstallers, self->monoInstallers, self->installerPrefabs);
+
         patcher->InstallEnvironment(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installerPrefabs, installerPrefabs);
     }
 
     Context_InstallInstallers_5(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installers, installerPrefabs);
 }
 
-MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_0, static_cast<void (Context::*)()>(&Context::InstallInstallers), void, Context* self) {
-    auto patcher = Patchers::EnvironmentPatcher::get_instance();
-    if (patcher) {
-
-        // prefix
-        if (il2cpp_utils::try_cast<GameObjectContext>(self).has_value())
-            patcher->LoveYouCountersPlus(reinterpret_cast<GameObjectContext*>(self));
-        else if (il2cpp_utils::try_cast<SceneDecoratorContext>(self).has_value())
-            patcher->PreventEnvironmentInstall(reinterpret_cast<SceneDecoratorContext*>(self), self->normalInstallers, self->normalInstallerTypes, self->scriptableObjectInstallers, self->monoInstallers, self->installerPrefabs);
-    }
-
-    Context_InstallInstallers_0(self);
-}
-
-// TODO: check if self is a GameObjectContext && combine the patches
 MAKE_AUTO_HOOK_MATCH(Context_InstallSceneBindings, &Context::InstallSceneBindings, void, Context* self, List<MonoBehaviour*>* injectableMonoBehaviours) {
     Context_InstallSceneBindings(self, injectableMonoBehaviours);
 
