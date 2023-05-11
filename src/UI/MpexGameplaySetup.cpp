@@ -1,4 +1,5 @@
 #include "UI/MpexGameplaySetup.hpp"
+#include "logging.hpp"
 #include "config.hpp"
 #include "assets.hpp"
 
@@ -19,12 +20,12 @@ namespace MultiplayerExtensions::UI {
 
     void MpexGameplaySetup::Initialize() {
         BSML::parse_and_construct(IncludedAssets::MpexGameplaySetup_bsml, _multiplayerSettingsPanel->get_transform(), this);
-        vert->GetChild(0)->SetParent(_multiplayerSettingsPanel->get_transform());
     }
 
     void MpexGameplaySetup::PresentPreferences() {
         auto flow = _mainFlowCoordinator->YoungestChildFlowCoordinatorOrSelf();
-        flow->PresentFlowCoordinator(_setupFlowCoordinator, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, true);
+        _setupFlowCoordinator->parentFlowCoordinator = flow;
+        flow->PresentFlowCoordinator(_setupFlowCoordinator, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, false);
     }
 
     bool MpexGameplaySetup::get_soloEnvironment() { return config.soloEnvironment; }

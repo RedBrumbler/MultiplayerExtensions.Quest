@@ -1,5 +1,7 @@
-<vertical id='vert'>
-	<text text='MultiplayerExtensions' pad-bottom='0' align='Bottom' size-delta-y='10'/>
-	<toggle-setting value='soloEnvironment' apply-on-change='true' text='Solo Environment' hover-hint='Uses the solo environment instead of the multiplayer environment. Chroma and Noodle compatible!'/>
-	<button text='Preferences' on-click='PreferencesClick'/>
-</vertical>
+<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/RedBrumbler/Quest-BSML-Docs/gh-pages/schema.xsd'>
+	<vertical pref-height='20' pref-width='90' anchor-pos-y='-10' vertical-fit='PreferredSize' horizontal-fit='PreferredSize'>
+		<text text='MultiplayerExtensions' pad-bottom='0' align='Bottom' size-delta-y='12'/>
+		<toggle-setting value='soloEnvironment' apply-on-change='true' text='Solo Environment' hover-hint='Uses the solo environment instead of the multiplayer environment. Chroma and Noodle compatible!'/>
+		<button text='Preferences' on-click='PresentPreferences'/>
+	</vertical>
+</bg>
