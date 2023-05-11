@@ -1,0 +1,5 @@
+<vertical id='vert'>
+	<text text='MultiplayerExtensions' pad-bottom='0' align='Bottom' size-delta-y='10'/>
+	<toggle-setting value='soloEnvironment' apply-on-change='true' text='Solo Environment' hover-hint='Uses the solo environment instead of the multiplayer environment. Chroma and Noodle compatible!'/>
+	<button text='Preferences' on-click='PreferencesClick'/>
+</vertical>

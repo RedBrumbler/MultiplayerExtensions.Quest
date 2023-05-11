@@ -1,0 +1,10 @@
+<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+    <horizontal anchor-min-y='1'  bg='panel-top' pad-left='10' pad-right='10' horizontal-fit='PreferredSize'/>
+    <settings-container>
+        <toggle-setting value='hidePlayerPlatforms' apply-on-change='true' text='Hide Player Platforms' hover-hint="Hides other player's platforms in game."/>
+        <toggle-setting value='hidePlayerLights' apply-on-change='true' text='Hide Player Lights' hover-hint="Hides other player's platform lights in game."/>
+        <toggle-setting value='hidePlayerObjects' apply-on-change='true' text='Hide Player Objects' hover-hint="Hides other player's notes and walls in game."/>
+        <toggle-setting value='missLighting' apply-on-change='true' text='Miss Lighting' hover-hint="Turns a player's platform red when they miss a note."/>
+        <toggle-setting id='personalMissLightingToggle' value='personalMissLightingOnly' apply-on-change='true' text='Personal Only Miss Lighting' hover-hint="Makes miss lighting only apply to your platform."/>
+    </settings-container>
+</bg>
