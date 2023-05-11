@@ -8,6 +8,7 @@ namespace MultiplayerExtensions::Patchers {
 
     void MenuEnvironmentPatcher::ctor(GlobalNamespace::GameplaySetupViewController* gameplaySetup) {
         INVOKE_CTOR();
+        instance = this;
         _gameplaySetup = gameplaySetup;
     }
 
