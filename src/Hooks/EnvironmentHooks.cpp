@@ -28,16 +28,6 @@ MAKE_AUTO_HOOK_MATCH(SceneDecoratorContext_GetInjectableMonoBehaviours, &SceneDe
     }
 }
 
-MAKE_AUTO_HOOK_MATCH(SceneDecoratorContext_InstallDecoratorInstallers, &SceneDecoratorContext::InstallDecoratorInstallers, void, SceneDecoratorContext* self) {
-    auto patcher = Patchers::EnvironmentPatcher::get_instance();
-    if (patcher) {
-        // prefix
-        patcher->PreventEnvironmentInstall(self, self->normalInstallers, self->normalInstallerTypes, self->scriptableObjectInstallers, self->monoInstallers, self->installerPrefabs);
-    }
-
-    SceneDecoratorContext_InstallDecoratorInstallers(self);
-}
-
 MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameScenesManager::ActivatePresentedSceneRootObjects, void, List<StringW>* scenesToPresent) {
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
@@ -70,10 +60,15 @@ MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(
 
 MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_0, static_cast<void (Context::*)()>(&Context::InstallInstallers), void, Context* self) {
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
-    if (patcher && il2cpp_utils::try_cast<Zenject::GameObjectContext>(self).has_value()) {
+    if (patcher) {
+
         // prefix
-        patcher->LoveYouCountersPlus(reinterpret_cast<Zenject::GameObjectContext*>(self));
+        if (il2cpp_utils::try_cast<GameObjectContext>(self).has_value())
+            patcher->LoveYouCountersPlus(reinterpret_cast<GameObjectContext*>(self));
+        else if (il2cpp_utils::try_cast<SceneDecoratorContext>(self).has_value())
+            patcher->PreventEnvironmentInstall(reinterpret_cast<SceneDecoratorContext*>(self), self->normalInstallers, self->normalInstallerTypes, self->scriptableObjectInstallers, self->monoInstallers, self->installerPrefabs);
     }
+
     Context_InstallInstallers_0(self);
 }
 
