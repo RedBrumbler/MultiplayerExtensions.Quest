@@ -8,6 +8,10 @@
 DEFINE_TYPE(MultiplayerExtensions::UI, MpexEnvironmentViewController);
 
 namespace MultiplayerExtensions::UI {
+    void MpexEnvironmentViewController::ctor() {
+        INVOKE_BASE_CTOR(classof(HMUI::ViewController*));
+    }
+
     void MpexEnvironmentViewController::Inject(GlobalNamespace::GameplaySetupViewController* gameplaySetup) {
         _gameplaySetup = gameplaySetup;
     }

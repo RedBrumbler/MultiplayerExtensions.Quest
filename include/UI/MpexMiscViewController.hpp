@@ -9,4 +9,5 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexMiscViewController, HMUI::V
 
     DECLARE_BSML_PROPERTY(bool, disablePlayerColors);
     DECLARE_BSML_PROPERTY(bool, disablePlatformMovement);
+    DECLARE_CTOR(ctor);
 )

@@ -19,4 +19,5 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexEnvironmentViewController, 
     DECLARE_BSML_PROPERTY(bool, soloEnvironment);
     DECLARE_BSML_PROPERTY(bool, sideBySide);
     DECLARE_BSML_PROPERTY(float, sideBySideDistance);
+    DECLARE_CTOR(ctor);
 )

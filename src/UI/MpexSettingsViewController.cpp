@@ -7,6 +7,10 @@
 DEFINE_TYPE(MultiplayerExtensions::UI, MpexSettingsViewController);
 
 namespace MultiplayerExtensions::UI {
+    void MpexSettingsViewController::ctor() {
+        INVOKE_BASE_CTOR(classof(HMUI::ViewController*));
+    }
+
     void MpexSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
         BSML::parse_and_construct(IncludedAssets::MpexSettingsViewController_bsml, get_transform(), this);

@@ -18,4 +18,6 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSettingsViewController, HMU
     DECLARE_BSML_PROPERTY(bool, hidePlayerObjects);
     DECLARE_BSML_PROPERTY(bool, missLighting);
     DECLARE_BSML_PROPERTY(bool, personalMissLightingOnly);
+
+    DECLARE_CTOR(ctor);
 )
