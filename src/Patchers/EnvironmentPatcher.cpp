@@ -24,6 +24,7 @@ namespace MultiplayerExtensions::Patchers {
 
     void EnvironmentPatcher::ctor(GlobalNamespace::GameScenesManager* scenesManager) {
         INVOKE_CTOR();
+        instance = this;
         _scenesManager = scenesManager;
     }
 
