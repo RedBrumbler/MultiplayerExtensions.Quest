@@ -11,6 +11,7 @@ namespace MultiplayerExtensions::Patchers {
 
     void AvatarPlacePatcher::ctor(GlobalNamespace::MenuEnvironmentManager* menuEnvironmentManager) {
         INVOKE_CTOR();
+        instance = this;
         _menuEnvironmentManager = menuEnvironmentManager;
     }
 

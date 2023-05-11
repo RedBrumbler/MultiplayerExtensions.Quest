@@ -8,6 +8,7 @@ namespace MultiplayerExtensions::Patchers {
 
     void ColorSchemePatcher::ctor(GlobalNamespace::GameplayCoreSceneSetupData* sceneSetupData) {
         INVOKE_CTOR();
+        instance = this;
         _sceneSetupData = sceneSetupData;
     }
 
