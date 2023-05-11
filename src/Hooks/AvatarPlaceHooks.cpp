@@ -15,7 +15,9 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces, &::Globa
 
     MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces(self);
     for (auto place : ListW<GlobalNamespace::MultiplayerLobbyAvatarPlace*>(self->allPlaces)) {
-        place->GetComponent<MultiplayerExtensions::Environment::MpexAvatarPlaceLighting*>()->_sortIndex = sortIndex;
+        auto lighting = place->GetComponent<MultiplayerExtensions::Environment::MpexAvatarPlaceLighting*>();
+        if (lighting)
+            lighting->_sortIndex = sortIndex;
+        else ERROR("Can't get mpex avatar lighting from avatar place!");
     }
-
 }
