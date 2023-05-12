@@ -70,8 +70,8 @@ namespace MultiplayerExtensions::Environment {
     }
 
     void MpexAvatarNameTag::HandleMpexData(GlobalNamespace::IConnectedPlayer* player, Players::MpexPlayerData* data) {
-            if (player == _player)
-                _nameText->set_color(data->playerColor);
+        if (player == _player)
+            _nameText->set_color(data->playerColor);
     }
 
     void MpexAvatarNameTag::SetPlatformData(MultiplayerCore::Players::MpPlayerData* data) {
