@@ -21,8 +21,8 @@ namespace MultiplayerExtensions::Installers {
     void LobbyInstaller::InstallBindings() {
         auto container = get_Container();
 
-        auto avatarPlaceRegistration = LobbyAvatarPlaceRegistration::New_ctor("_multiplayerAvatarPlacePrefab", std::bind(&LobbyInstaller::DecorateAvatarPlace, this, std::placeholders::_1));
-        auto avatarRegistration = LobbyAvatarRegistration::New_ctor("_multiplayerLobbyAvatarControllerPrefab", std::bind(&LobbyInstaller::DecorateAvatar, this, std::placeholders::_1));
+        auto avatarPlaceRegistration = LobbyAvatarPlaceRegistration::New_ctor("multiplayerAvatarPlacePrefab", std::bind(&LobbyInstaller::DecorateAvatarPlace, this, std::placeholders::_1));
+        auto avatarRegistration = LobbyAvatarRegistration::New_ctor("multiplayerLobbyAvatarControllerPrefab", std::bind(&LobbyInstaller::DecorateAvatar, this, std::placeholders::_1));
 
         avatarPlaceRegistration.RegisterRedecorator(container);
         avatarRegistration.RegisterRedecorator(container);
