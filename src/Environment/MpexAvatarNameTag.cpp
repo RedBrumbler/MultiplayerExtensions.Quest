@@ -28,7 +28,7 @@ namespace MultiplayerExtensions::Environment {
         _nameText = t->Find("Name")->GetComponent<HMUI::CurvedTextMeshPro*>();
 
         if (!_bg->GetComponent<UnityEngine::UI::HorizontalLayoutGroup*>()) {
-            auto layout = _bg->GetComponent<UnityEngine::UI::HorizontalLayoutGroup*>();
+            auto layout = _bg->get_gameObject()->AddComponent<UnityEngine::UI::HorizontalLayoutGroup*>();
             layout->set_childAlignment(UnityEngine::TextAnchor::MiddleCenter);
             layout->set_childForceExpandWidth(false);
             layout->set_childForceExpandHeight(false);
