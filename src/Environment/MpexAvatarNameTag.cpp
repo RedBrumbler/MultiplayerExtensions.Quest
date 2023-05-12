@@ -111,7 +111,7 @@ namespace MultiplayerExtensions::Environment {
         auto iconObj = UnityEngine::GameObject::New_ctor();
         auto t = iconObj->get_transform();
         t->SetParent(_bg->get_transform(), false);
-        t->set_localScale({3.2f, 3.2f, 3.2f});
+        t->set_localScale({32.0f, 32.0f, 32.0f});
         iconObj->set_layer(5);
 
         iconObj->AddComponent<UnityEngine::CanvasRenderer*>();
