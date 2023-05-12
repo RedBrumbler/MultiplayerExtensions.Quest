@@ -40,7 +40,11 @@ namespace MultiplayerExtensions::Players {
     }
 
     bool MpexPlayerManager::TryGetPlayer(const std::string& userId, MpexPlayerData*& player) {
-        return _playerData->TryGetValue(userId, byref(player));
+        if (_playerData->ContainsKey(userId)) {
+            player = _playerData->get_Item(userId);
+            return true;
+        }
+        return false;
     }
 
     MpexPlayerData* MpexPlayerManager::GetPlayer(const std::string& userId) {
