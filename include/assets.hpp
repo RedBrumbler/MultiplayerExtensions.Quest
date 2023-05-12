@@ -43,8 +43,10 @@ struct IncludedAsset {
 
 namespace IncludedAssets {
 
+	DECLARE_FILE(IconMeta64_png)
 	DECLARE_FILE(IconOculus64_png)
 	DECLARE_FILE(IconSteam64_png)
+	DECLARE_FILE(IconToaster64_png)
 	DECLARE_FILE(MpexEnvironmentViewController_bsml)
 	DECLARE_FILE(MpexGameplaySetup_bsml)
 	DECLARE_FILE(MpexMiscViewController_bsml)

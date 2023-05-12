@@ -75,19 +75,23 @@ namespace MultiplayerExtensions::Environment {
     }
 
     void MpexAvatarNameTag::SetPlatformData(MultiplayerCore::Players::MpPlayerData* data) {
+        UnityEngine::Sprite* icon = nullptr;
         switch(data->platform) {
             case MultiplayerCore::Players::Platform::Steam:
-                SetIcon(PlayerIconSlot::Platform, _spriteManager->get_steamIcon());
+                icon = _spriteManager->get_steamIcon();
                 break;
-            case MultiplayerCore::Players::Platform::OculusPC: [[fallthrough]];
+            case MultiplayerCore::Players::Platform::OculusPC:
+                icon = _spriteManager->get_oculusIcon();
+                break;
             case MultiplayerCore::Players::Platform::OculusQuest:
-                SetIcon(PlayerIconSlot::Platform, _spriteManager->get_oculusIcon());
+                icon = _spriteManager->get_metaIcon();
                 break;
             default:
-                // TODO: get a proper unknown sprite
-                SetIcon(PlayerIconSlot::Platform, BSML::Utilities::ImageResources::GetBlankSprite());
+                ERROR("Sprite for platform {} is not available!", (int)data->platform);
+                icon = _spriteManager->get_toasterIcon();
                 break;
         }
+        SetIcon(PlayerIconSlot::Platform, icon);
     }
 
     void MpexAvatarNameTag::SetIcon(PlayerIconSlot slot, UnityEngine::Sprite* icon) {
