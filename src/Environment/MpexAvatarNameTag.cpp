@@ -34,7 +34,7 @@ namespace MultiplayerExtensions::Environment {
             layout->set_childForceExpandHeight(false);
             layout->set_childScaleWidth(false);
             layout->set_childScaleHeight(false);
-            layout->set_spacing(4.0f);
+            layout->set_spacing(8.0f);
         }
 
         _nameText->get_transform()->SetParent(_bg->get_transform(), false);
@@ -111,7 +111,7 @@ namespace MultiplayerExtensions::Environment {
         auto iconObj = UnityEngine::GameObject::New_ctor();
         auto t = iconObj->get_transform();
         t->SetParent(_bg->get_transform(), false);
-        t->set_localScale({32.0f, 32.0f, 32.0f});
+        t->set_localScale({30.0f, 30.0f, 0});
         iconObj->set_layer(5);
 
         iconObj->AddComponent<UnityEngine::CanvasRenderer*>();
