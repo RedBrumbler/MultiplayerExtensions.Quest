@@ -1,3 +1,4 @@
+#include "_config.h"
 #include "hooking.hpp"
 #include "logging.hpp"
 #include "config.hpp"
@@ -14,15 +15,17 @@
 #include "lapiz/shared/zenject/Zenjector.hpp"
 #include "bsml/shared/BSML.hpp"
 
-ModInfo modInfo{MOD_ID, VERSION};
+modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 
 Logger& getLogger() {
     static Logger* logger = new Logger(modInfo, LoggerOptions(false, true));
     return *logger;
 }
 
-extern "C" void setup(ModInfo& info) {
-    info = modInfo;
+MPEX_EXPORT_FUNC void setup(CModInfo* info) {
+    info->id = MOD_ID;
+    info->version = VERSION;
+    info->version_long = 0;
 }
 
 extern "C" void load() {

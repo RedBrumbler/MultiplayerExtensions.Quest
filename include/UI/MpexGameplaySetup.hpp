@@ -14,7 +14,7 @@
 #include "GlobalNamespace/MultiplayerSettingsPanelController.hpp"
 #include "MpexSetupFlowCoordinator.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::UI, MpexGameplaySetup, Il2CppObject, classof(Zenject::IInitializable*),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::UI, MpexGameplaySetup, System::Object, classof(Zenject::IInitializable*),
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameplaySetupViewController*, _gameplaySetup);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MultiplayerSettingsPanelController*, _multiplayerSettingsPanel);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MainFlowCoordinator*, _mainFlowCoordinator);
@@ -24,7 +24,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::UI, MpexGameplaySetup, I
 
     DECLARE_INJECT_METHOD(void, Inject, GlobalNamespace::GameplaySetupViewController* gameplaySetup, GlobalNamespace::MainFlowCoordinator* mainFlowCoordinator, MpexSetupFlowCoordinator* setupFlowCoordinator);
 
-    DECLARE_OVERRIDE_METHOD(void, Initialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::IInitializable::Initialize>::get());
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Initialize, &::Zenject::IInitializable::Initialize);
 
     DECLARE_INSTANCE_METHOD(void, PresentPreferences);
     DECLARE_BSML_PROPERTY(bool, soloEnvironment);

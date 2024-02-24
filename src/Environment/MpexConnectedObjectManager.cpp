@@ -28,7 +28,7 @@ namespace MultiplayerExtensions::Environment {
     }
 
     void MpexConnectedObjectManager::OnDestroy() {
-        if (_playerSpectatingSpot && _playerSpectatingSpot->m_CachedPtr.m_value)
+        if (_playerSpectatingSpot && _playerSpectatingSpot->m_CachedPtr)
             _playerSpectatingSpot->remove_isObservedChangedEvent(_observedChangedEvent);
     }
 

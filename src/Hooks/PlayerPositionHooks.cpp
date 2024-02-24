@@ -2,6 +2,7 @@
 #include "logging.hpp"
 #include "config.hpp"
 
+#include "UnityEngine/Vector3.hpp"
 #include "GlobalNamespace/MultiplayerPlayerLayout.hpp"
 #include "GlobalNamespace/MultiplayerPlayerPlacement.hpp"
 #include "GlobalNamespace/MultiplayerConditionalActiveByLayout.hpp"
@@ -13,7 +14,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLayoutProvider_CalculateLayout, &::GlobalNamespa
 }
 
 MAKE_AUTO_HOOK_MATCH(MultiplayerConditionalActiveByLayout_Start, &::GlobalNamespace::MultiplayerConditionalActiveByLayout::Start, void, GlobalNamespace::MultiplayerConditionalActiveByLayout* self) {
-    if (config.sideBySide && self->layoutProvider->get_layout() == GlobalNamespace::MultiplayerPlayerLayout::NotDetermined)
+    if (config.sideBySide && self->_layoutProvider->get_layout() == GlobalNamespace::MultiplayerPlayerLayout::NotDetermined)
         self->HandlePlayersLayoutWasCalculated(GlobalNamespace::MultiplayerPlayerLayout::Duel, 2);
 
     MultiplayerConditionalActiveByLayout_Start(self);

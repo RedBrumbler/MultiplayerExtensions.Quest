@@ -18,17 +18,18 @@ using namespace MultiplayerExtensions;
 using namespace UnityEngine;
 using namespace GlobalNamespace;
 using namespace Zenject;
+using namespace System::Collections::Generic;
 
-MAKE_AUTO_HOOK_MATCH(SceneDecoratorContext_GetInjectableMonoBehaviours, &SceneDecoratorContext::GetInjectableMonoBehaviours, void, SceneDecoratorContext* self, List<MonoBehaviour*>* monoBehaviours) {
+MAKE_AUTO_HOOK_MATCH(SceneDecoratorContext_GetInjectableMonoBehaviours, &SceneDecoratorContext::GetInjectableMonoBehaviours, void, SceneDecoratorContext* self, List_1<UnityW<MonoBehaviour>>* monoBehaviours) {
     SceneDecoratorContext_GetInjectableMonoBehaviours(self, monoBehaviours);
     // postfix
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
-        patcher->PreventEnvironmentInjection(self, monoBehaviours, self->container);
+        patcher->PreventEnvironmentInjection(self, monoBehaviours, self->_container);
     }
 }
 
-MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameScenesManager::ActivatePresentedSceneRootObjects, void, List<StringW>* scenesToPresent) {
+MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameScenesManager::ActivatePresentedSceneRootObjects, void, List_1<StringW>* scenesToPresent) {
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
         // prefix
@@ -38,7 +39,7 @@ MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameS
     GameScenesManager_ActivatePresentedSceneRootObjects(scenesToPresent);
 }
 
-MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectContext::GetInjectableMonoBehaviours, void, GameObjectContext* self, List<MonoBehaviour*>* monoBehaviours) {
+MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectContext::GetInjectableMonoBehaviours, void, GameObjectContext* self, List_1<UnityW<MonoBehaviour>>* monoBehaviours) {
     GameObjectContext_GetInjectableMonoBehaviours(self, monoBehaviours);
 
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
@@ -48,23 +49,57 @@ MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectC
     }
 }
 
-MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(List<InstallerBase*>*, List<::System::Type*>*, List<ScriptableObjectInstaller*>*, List<MonoInstaller*>*, List<MonoInstaller*>*)>(&Context::InstallInstallers), void, Context* self, List<InstallerBase*>* normalInstallers, List<::System::Type*>* normalInstallerTypes, List<ScriptableObjectInstaller*>* scriptableObjectInstallers, List<MonoInstaller*>* installers, List<MonoInstaller*>* installerPrefabs) {
+using Context_InstallInstallers_5_t =
+    void (Context::*)(
+        List_1<::Zenject::InstallerBase*>*,
+        List_1<::System::Type*>*,
+        List_1<::UnityW<::Zenject::ScriptableObjectInstaller>>*,
+        List_1<::UnityW<::Zenject::MonoInstaller>>*,
+        List_1<::UnityW<::Zenject::MonoInstaller>>*
+    );
+
+MAKE_AUTO_HOOK_MATCH(
+    Context_InstallInstallers_5,
+    static_cast<Context_InstallInstallers_5_t>(&Context::InstallInstallers),
+    void,
+    Context* self,
+    List_1<::Zenject::InstallerBase*>* normalInstallers,
+    List_1<::System::Type*>* normalInstallerTypes,
+    List_1<::UnityW<::Zenject::ScriptableObjectInstaller>>* scriptableObjectInstallers,
+    List_1<::UnityW<::Zenject::MonoInstaller>>* installers,
+    List_1<::UnityW<::Zenject::MonoInstaller>>* installerPrefabs
+) {
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
         // prefix
         // prefix
-        if (il2cpp_utils::try_cast<GameObjectContext>(self).has_value())
+        if (il2cpp_utils::try_cast<GameObjectContext>(self).has_value()) {
             patcher->LoveYouCountersPlus(reinterpret_cast<GameObjectContext*>(self));
-        else if (il2cpp_utils::try_cast<SceneDecoratorContext>(self).has_value())
-            patcher->PreventEnvironmentInstall(reinterpret_cast<SceneDecoratorContext*>(self), self->normalInstallers, self->normalInstallerTypes, self->scriptableObjectInstallers, self->monoInstallers, self->installerPrefabs);
+        } else if (il2cpp_utils::try_cast<SceneDecoratorContext>(self).has_value()) {
+            patcher->PreventEnvironmentInstall(
+                reinterpret_cast<SceneDecoratorContext*>(self),
+                self->_normalInstallers,
+                self->_normalInstallerTypes,
+                self->_scriptableObjectInstallers,
+                self->_monoInstallers,
+                self->_installerPrefabs
+            );
+        }
 
-        patcher->InstallEnvironment(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installerPrefabs, installerPrefabs);
+        patcher->InstallEnvironment(
+            self,
+            normalInstallers,
+            normalInstallerTypes,
+            scriptableObjectInstallers,
+            installerPrefabs,
+            installerPrefabs
+        );
     }
 
     Context_InstallInstallers_5(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installers, installerPrefabs);
 }
 
-MAKE_AUTO_HOOK_MATCH(Context_InstallSceneBindings, &Context::InstallSceneBindings, void, Context* self, List<MonoBehaviour*>* injectableMonoBehaviours) {
+MAKE_AUTO_HOOK_MATCH(Context_InstallSceneBindings, &Context::InstallSceneBindings, void, Context* self, List_1<UnityW<MonoBehaviour>>* injectableMonoBehaviours) {
     Context_InstallSceneBindings(self, injectableMonoBehaviours);
 
     auto patcher = Patchers::EnvironmentPatcher::get_instance();

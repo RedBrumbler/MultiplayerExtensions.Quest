@@ -5,7 +5,7 @@
 #include "GlobalNamespace/IMultiplayerSessionManager.hpp"
 #include "GlobalNamespace/IConnectedPlayer.hpp"
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Utilities, SessionManagerEventPassthrough, Il2CppObject,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Utilities, SessionManagerEventPassthrough, System::Object,
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IMultiplayerSessionManager*, _sessionManager);
 
     DECLARE_CTOR(ctor, GlobalNamespace::IMultiplayerSessionManager* sessionManager);

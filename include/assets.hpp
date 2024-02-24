@@ -1,55 +1,11 @@
 #pragma once
+#include "kaleb/shared/kaleb.hpp"
 
-#include <string_view>
-#include "beatsaber-hook/shared/utils/typedefs.h"
-
-struct IncludedAsset {
-
-    IncludedAsset(uint8_t* start, uint8_t* end) : array(reinterpret_cast<Array<uint8_t>*>(start)) {
-        array->klass = nullptr;
-        array->monitor = nullptr;
-        array->bounds = nullptr;
-        array->max_length = end - start - 33;
-        *(end - 1)= '\0';
-    }
-    
-    operator ArrayW<uint8_t>() const {
-        init();
-        return array;
-    }
-
-    operator std::string_view() const {
-        return { reinterpret_cast<char*>(array->values), array->Length() };
-    }
-    
-    operator std::span<uint8_t>() const {
-        return { array->values, array->Length() };
-    }
-
-    void init() const {
-        if(!array->klass)
-            array->klass = classof(Array<uint8_t>*);
-    }
-
-    private:
-        Array<uint8_t>* array;
-
-};
-
-#define DECLARE_FILE(name)                         \
-    extern "C" uint8_t _binary_##name##_start[];  \
-    extern "C" uint8_t _binary_##name##_end[];    \
-    const IncludedAsset name { _binary_##name##_start, _binary_##name##_end};
-
-namespace IncludedAssets {
-
-	DECLARE_FILE(IconMeta64_png)
-	DECLARE_FILE(IconOculus64_png)
-	DECLARE_FILE(IconSteam64_png)
-	DECLARE_FILE(IconToaster64_png)
-	DECLARE_FILE(MpexEnvironmentViewController_bsml)
-	DECLARE_FILE(MpexGameplaySetup_bsml)
-	DECLARE_FILE(MpexMiscViewController_bsml)
-	DECLARE_FILE(MpexSettingsViewController_bsml)
-
-}
+DECLARE_FILE(_binary_Icons_Meta64_png, Assets::Icons, Meta64_png);
+DECLARE_FILE(_binary_Icons_Oculus64_png, Assets::Icons, Oculus64_png);
+DECLARE_FILE(_binary_Icons_Steam64_png, Assets::Icons, Steam64_png);
+DECLARE_FILE(_binary_Icons_Toaster64_png, Assets::Icons, Toaster64_png);
+DECLARE_FILE(_binary_Views_MpexEnvironmentViewController_bsml, Assets::Views, MpexEnvironmentViewController_bsml);
+DECLARE_FILE(_binary_Views_MpexGameplaySetup_bsml, Assets::Views, MpexGameplaySetup_bsml);
+DECLARE_FILE(_binary_Views_MpexMiscViewController_bsml, Assets::Views, MpexMiscViewController_bsml);
+DECLARE_FILE(_binary_Views_MpexSettingsViewController_bsml, Assets::Views, MpexSettingsViewController_bsml);

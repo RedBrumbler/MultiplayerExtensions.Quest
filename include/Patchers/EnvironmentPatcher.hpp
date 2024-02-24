@@ -18,17 +18,17 @@
 
 #include "System/IDisposable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPatcher, Il2CppObject, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPatcher, System::Object, classof(System::IDisposable*),
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameScenesManager*, _scenesManager);
-    DECLARE_OVERRIDE_METHOD(void, Dispose, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::System::IDisposable::Dispose>::get());
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::MonoBehaviour*>, _behavioursToInject, List<UnityEngine::MonoBehaviour*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::InstallerBase*>, _normalInstallers, List<Zenject::InstallerBase*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<System::Type*>, _normalInstallerTypes, List<System::Type*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::ScriptableObjectInstaller*>, _scriptableObjectInstallers, List<Zenject::ScriptableObjectInstaller*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::MonoInstaller*>, _monoInstallers, List<Zenject::MonoInstaller*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::MonoInstaller*>, _installerPrefabs, List<Zenject::MonoInstaller*>::New_ctor());
-    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::GameObject*>, _objectsToEnable, List<UnityEngine::GameObject*>::New_ctor());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::MonoBehaviour*>, _behavioursToInject, ListW<UnityEngine::MonoBehaviour*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::InstallerBase*>, _normalInstallers, ListW<Zenject::InstallerBase*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<System::Type*>, _normalInstallerTypes, ListW<System::Type*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::ScriptableObjectInstaller*>, _scriptableObjectInstallers, ListW<Zenject::ScriptableObjectInstaller*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::MonoInstaller*>, _monoInstallers, ListW<Zenject::MonoInstaller*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::MonoInstaller*>, _installerPrefabs, ListW<Zenject::MonoInstaller*>::New());
+    DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::GameObject*>, _objectsToEnable, ListW<UnityEngine::GameObject*>::New());
 
     DECLARE_CTOR(ctor, GlobalNamespace::GameScenesManager* scenesManager);
 

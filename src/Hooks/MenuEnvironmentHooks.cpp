@@ -8,7 +8,6 @@
 #include "GlobalNamespace/ScenesTransitionSetupDataSO.hpp"
 #include "GlobalNamespace/MultiplayerLevelScenesTransitionSetupDataSO.hpp"
 #include "GlobalNamespace/GameplaySetupViewController.hpp"
-#include "GlobalNamespace/PlayerSettingsPanelController_PlayerSettingsPanelLayout.hpp"
 
 #include "GlobalNamespace/SceneInfo.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
@@ -50,16 +49,16 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
         if (config.soloEnvironment) {
             // prefix
             // save original info
-            originalEnvironmentInfo = self->multiplayerEnvironmentInfo;
-            self->multiplayerEnvironmentInfo = GlobalNamespace::BeatmapEnvironmentHelper::GetEnvironmentInfo(difficultyBeatmap);
+            originalEnvironmentInfo = self->_multiplayerEnvironmentInfo;
+            self->_multiplayerEnvironmentInfo = GlobalNamespace::BeatmapEnvironmentHelper::GetEnvironmentInfo(difficultyBeatmap);
             if (patcher->_gameplaySetup->get_environmentOverrideSettings()->overrideEnvironments)
-                self->multiplayerEnvironmentInfo = patcher->_gameplaySetup->get_environmentOverrideSettings()->GetOverrideEnvironmentInfoForType(self->multiplayerEnvironmentInfo->get_environmentType());
+                self->_multiplayerEnvironmentInfo = patcher->_gameplaySetup->get_environmentOverrideSettings()->GetOverrideEnvironmentInfoForType(self->_multiplayerEnvironmentInfo->get_environmentType());
 
             MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, previewBeatmapLevel, beatmapDifficulty, beatmapCharacteristic, difficultyBeatmap, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, useTestNoteCutSoundEffects);
 
-            auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
+            auto multiScene = self->scenes->FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
             if (multiScene) {
-                ListW<::GlobalNamespace::SceneInfo*> newScenes = List<::GlobalNamespace::SceneInfo*>::New_ctor();
+                auto newScenes = ListW<::GlobalNamespace::SceneInfo*>::New();
                 newScenes->EnsureCapacity(self->scenes.size() + 1);
                 for (auto info : self->scenes) newScenes->Add(info);
                 newScenes->Add(originalEnvironmentInfo->get_sceneInfo());
@@ -69,7 +68,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
             }
 
             // postfix, restore original info
-            self->multiplayerEnvironmentInfo = originalEnvironmentInfo;
+            self->_multiplayerEnvironmentInfo = originalEnvironmentInfo;
         } else {
             MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, previewBeatmapLevel, beatmapDifficulty, beatmapCharacteristic, difficultyBeatmap, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, useTestNoteCutSoundEffects);
         }
@@ -77,15 +76,51 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
 
 // we can't hook ScenesTransitionSetupDataSO_Init so we have to get creative with other hooks
 
-MAKE_AUTO_HOOK_MATCH(StandardLevelScenesTransitionSetupDataSO_Init, &::GlobalNamespace::StandardLevelScenesTransitionSetupDataSO::Init, void, GlobalNamespace::StandardLevelScenesTransitionSetupDataSO* self, StringW gameMode, GlobalNamespace::IDifficultyBeatmap* difficultyBeatmap, GlobalNamespace::IPreviewBeatmapLevel* previewBeatmapLevel, GlobalNamespace::OverrideEnvironmentSettings* overrideEnvironmentSettings, GlobalNamespace::ColorScheme *overrideColorScheme, GlobalNamespace::GameplayModifiers *gameplayModifiers, GlobalNamespace::PlayerSpecificSettings *playerSpecificSettings, GlobalNamespace::PracticeSettings *practiceSettings, StringW backButtonText, bool useTestNoteCutSoundEffects, bool startPaused, GlobalNamespace::BeatmapDataCache* beatmapDataCache) {
-    StandardLevelScenesTransitionSetupDataSO_Init(self, gameMode, difficultyBeatmap, previewBeatmapLevel, overrideEnvironmentSettings, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, backButtonText, useTestNoteCutSoundEffects, startPaused, beatmapDataCache);
-    auto& scenes = self->scenes;
-    auto multiScene = self->scenes.FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
+MAKE_AUTO_HOOK_MATCH(
+    StandardLevelScenesTransitionSetupDataSO_Init,
+    &::GlobalNamespace::StandardLevelScenesTransitionSetupDataSO::Init,
+    void,
+    GlobalNamespace::StandardLevelScenesTransitionSetupDataSO* self,
+    ::StringW gameMode,
+    ::GlobalNamespace::IDifficultyBeatmap* difficultyBeatmap,
+    ::GlobalNamespace::IPreviewBeatmapLevel* previewBeatmapLevel,
+    ::GlobalNamespace::OverrideEnvironmentSettings* overrideEnvironmentSettings,
+    ::GlobalNamespace::ColorScheme* overrideColorScheme,
+    ::GlobalNamespace::ColorScheme* beatmapOverrideColorScheme,
+    ::GlobalNamespace::GameplayModifiers* gameplayModifiers,
+    ::GlobalNamespace::PlayerSpecificSettings* playerSpecificSettings,
+    ::GlobalNamespace::PracticeSettings* practiceSettings,
+    ::StringW backButtonText,
+    bool useTestNoteCutSoundEffects,
+    bool startPaused,
+    ::GlobalNamespace::BeatmapDataCache* beatmapDataCache,
+    ::System::Nullable_1<::GlobalNamespace::__RecordingToolManager__SetupData> recordingToolData
+) {
+    StandardLevelScenesTransitionSetupDataSO_Init(
+        self,
+        gameMode,
+        difficultyBeatmap,
+        previewBeatmapLevel,
+        overrideEnvironmentSettings,
+        overrideColorScheme,
+        beatmapOverrideColorScheme,
+        gameplayModifiers,
+        playerSpecificSettings,
+        practiceSettings,
+        backButtonText,
+        useTestNoteCutSoundEffects,
+        startPaused,
+        beatmapDataCache,
+        recordingToolData
+    );
+
+    auto scenes = self->scenes;
+    auto multiScene = self->scenes->FirstOrDefault([](auto s){ return s->name->Contains("Multiplayer"); });
     if (multiScene) {
-        ListW<::GlobalNamespace::SceneInfo*> newScenes = List<::GlobalNamespace::SceneInfo*>::New_ctor();
+        auto newScenes = ListW<::GlobalNamespace::SceneInfo*>::New();
         newScenes->EnsureCapacity(scenes.size() + 1);
         for (auto info : scenes) newScenes->Add(info);
         newScenes->Add(originalEnvironmentInfo->get_sceneInfo());
-        scenes = newScenes->ToArray();
+        self->scenes = newScenes->ToArray();
     }
 }

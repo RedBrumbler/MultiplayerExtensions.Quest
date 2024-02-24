@@ -5,7 +5,7 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/CanvasRenderer.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
-#include "GlobalNamespace/ConnectedPlayerName.hpp"
+#include "BeatSaber/AvatarCore/ConnectedPlayerName.hpp"
 
 DEFINE_TYPE(MultiplayerExtensions::Environment, MpexAvatarNameTag);
 
@@ -39,7 +39,7 @@ namespace MultiplayerExtensions::Environment {
 
         _nameText->get_transform()->SetParent(_bg->get_transform(), false);
 
-        if (auto nativeNameScript = _nameText->GetComponent<GlobalNamespace::ConnectedPlayerName*>()) {
+        if (auto nativeNameScript = _nameText->GetComponent<BeatSaber::AvatarCore::ConnectedPlayerName*>()) {
             UnityEngine::Object::DestroyImmediate(nativeNameScript);
         }
         _nameText->set_text(_player->get_userName());

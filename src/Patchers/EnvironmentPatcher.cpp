@@ -10,9 +10,9 @@
 #include "GlobalNamespace/CoreGameHUDController.hpp"
 #include "GlobalNamespace/MultiplayerPositionHUDController.hpp"
 #include "GlobalNamespace/MultiplayerLocalActivePlayerFacade.hpp"
+#include "GlobalNamespace/EnvironmentBrandingManager.hpp"
 #include "GlobalNamespace/EnvironmentColorManager.hpp"
 #include "GlobalNamespace/LightSwitchEventEffect.hpp"
-#include "GlobalNamespace/EnvironmentBrandingManager_InitData.hpp"
 #include "Zenject/ConcreteIdBinderGeneric_1.hpp"
 #include "Zenject/ZenjectBinding.hpp"
 
@@ -38,14 +38,14 @@ namespace MultiplayerExtensions::Patchers {
             auto scene = instance->get_gameObject()->get_scene();
             auto sceneName = scene.get_name();
             INFO("Fixing bind conflicts on scene '{}'.", sceneName);
-            ListW<UnityEngine::MonoBehaviour*> removedBehaviours = List<UnityEngine::MonoBehaviour*>::New_ctor();
+            auto removedBehaviours = ListW<UnityEngine::MonoBehaviour*>::New();
 
             if (sceneName->Contains("Environment") && !sceneName->Contains("Multiplayer")) {
                 for (auto mb : monoBehaviours) {
                     auto binding = il2cpp_utils::try_cast<Zenject::ZenjectBinding>(mb).value_or(nullptr);
                     if (binding) {
-                        auto lightWithIdManagerItr = std::find_if(binding->components.begin(), binding->components.end(), [](auto c){ return il2cpp_utils::try_cast<GlobalNamespace::LightWithIdManager>(c).has_value(); });
-                        if (lightWithIdManagerItr != binding->components.end()) removedBehaviours->Add(mb);
+                        auto lightWithIdManagerItr = std::find_if(binding->_components.begin(), binding->_components.end(), [](auto c){ return c.template try_cast<GlobalNamespace::LightWithIdManager>().has_value(); });
+                        if (lightWithIdManagerItr != binding->_components.end()) removedBehaviours->Add(mb);
                     }
                 }
             }
@@ -60,8 +60,8 @@ namespace MultiplayerExtensions::Patchers {
 
             if (sceneName->Contains("Environment") && !sceneName->Contains("Multiplayer")) {
                 INFO("Preventing environment injection.");
-                _behavioursToInject = List<UnityEngine::MonoBehaviour*>::New_ctor();
-                _behavioursToInject->AddRange(monoBehaviours->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
+                _behavioursToInject = ListW<UnityEngine::MonoBehaviour*>::New();
+                _behavioursToInject->AddRange(monoBehaviours->i___System__Collections__Generic__IEnumerable_1_T_());
                 monoBehaviours->Clear();
             }
         } else {
@@ -75,16 +75,16 @@ namespace MultiplayerExtensions::Patchers {
         bool inStack = _scenesManager->IsSceneInStack("MultiplayerEnvironment");
         if (config.soloEnvironment && inStack && sceneName->Contains("Environment") && !sceneName->Contains("Multiplayer")) {
             INFO("Preventing environment installation");
-            _normalInstallers = List<Zenject::InstallerBase*>::New_ctor();
-            _normalInstallers->AddRange(normalInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            _normalInstallerTypes = List<System::Type*>::New_ctor();
-            _normalInstallerTypes->AddRange(normalInstallerTypes->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            _scriptableObjectInstallers = List<Zenject::ScriptableObjectInstaller*>::New_ctor();
-            _scriptableObjectInstallers->AddRange(scriptableObjectInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            _monoInstallers = List<Zenject::MonoInstaller*>::New_ctor();
-            _monoInstallers->AddRange(monoInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            _installerPrefabs = List<Zenject::MonoInstaller*>::New_ctor();
-            _installerPrefabs->AddRange(installerPrefabs->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
+            _normalInstallers = ListW<Zenject::InstallerBase*>::New();
+            _normalInstallers->AddRange(normalInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            _normalInstallerTypes = ListW<System::Type*>::New();
+            _normalInstallerTypes->AddRange(normalInstallerTypes->i___System__Collections__Generic__IEnumerable_1_T_());
+            _scriptableObjectInstallers = ListW<Zenject::ScriptableObjectInstaller*>::New();
+            _scriptableObjectInstallers->AddRange(scriptableObjectInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            _monoInstallers = ListW<Zenject::MonoInstaller*>::New();
+            _monoInstallers->AddRange(monoInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            _installerPrefabs = ListW<Zenject::MonoInstaller*>::New();
+            _installerPrefabs->AddRange(installerPrefabs->i___System__Collections__Generic__IEnumerable_1_T_());
 
             normalInstallers->Clear();
             normalInstallerTypes->Clear();
@@ -107,7 +107,7 @@ namespace MultiplayerExtensions::Patchers {
             if (scenesToPresent->Contains("MultiplayerEnvironment")) {
                 INFO("Preventing environment activation. ({})", defaultScene);
                 auto rootObjects = UnityEngine::SceneManagement::SceneManager::GetSceneByName(defaultScene).GetRootGameObjects();
-                _objectsToEnable = List<UnityEngine::GameObject*>::New_ctor();
+                _objectsToEnable = ListW<UnityEngine::GameObject*>::New();
                 _objectsToEnable->EnsureCapacity(rootObjects.size());
                 for (auto go : rootObjects) _objectsToEnable->Add(go);
 
@@ -129,7 +129,7 @@ namespace MultiplayerExtensions::Patchers {
         if (config.soloEnvironment && t->get_name()->Contains("LocalActivePlayer")) {
             INFO("Injecting Environment");
 
-            monoBehaviours->AddRange(_behavioursToInject->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
+            monoBehaviours->AddRange(_behavioursToInject->i___System__Collections__Generic__IEnumerable_1_T_());
         }
     }
 
@@ -138,11 +138,11 @@ namespace MultiplayerExtensions::Patchers {
         if (config.soloEnvironment && il2cpp_utils::try_cast<Zenject::GameObjectContext>(instance).has_value() && t->get_name()->Contains("LocalActivePlayer")) {
             INFO("Installing Environment");
 
-            normalInstallers->AddRange(_normalInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            normalInstallerTypes->AddRange(_normalInstallerTypes->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            scriptableObjectInstallers->AddRange(_scriptableObjectInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            installers->AddRange(_monoInstallers->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
-            installerPrefabs->AddRange(_installerPrefabs->i_IReadOnlyList_1_T()->i_IReadOnlyCollection_1_T()->i_IEnumerable_1_T());
+            normalInstallers->AddRange(_normalInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            normalInstallerTypes->AddRange(_normalInstallerTypes->i___System__Collections__Generic__IEnumerable_1_T_());
+            scriptableObjectInstallers->AddRange(_scriptableObjectInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            installers->AddRange(_monoInstallers->i___System__Collections__Generic__IEnumerable_1_T_());
+            installerPrefabs->AddRange(_installerPrefabs->i___System__Collections__Generic__IEnumerable_1_T_());
         }
     }
 
@@ -181,12 +181,12 @@ namespace MultiplayerExtensions::Patchers {
             activeObjects->Find("DirectionalLights")->get_gameObject()->SetActive(false);
 
             auto localActivePlayer = t->GetComponent<GlobalNamespace::MultiplayerLocalActivePlayerFacade*>();
-            auto activeOnlyGameObjects = localActivePlayer->activeOnlyGameObjects;
-            ListW<UnityEngine::GameObject*> newActiveOnlyGameObjects = List<UnityEngine::GameObject*>::New_ctor();
+            auto activeOnlyGameObjects = localActivePlayer->_activeOnlyGameObjects;
+            auto newActiveOnlyGameObjects = ListW<UnityW<UnityEngine::GameObject>>::New();
             newActiveOnlyGameObjects->EnsureCapacity(activeOnlyGameObjects.size() + _objectsToEnable.size());
             for (auto go : activeOnlyGameObjects) newActiveOnlyGameObjects->Add(go);
             for (auto go : _objectsToEnable) newActiveOnlyGameObjects->Add(go);
-            localActivePlayer->activeOnlyGameObjects = newActiveOnlyGameObjects->ToArray();
+            localActivePlayer->_activeOnlyGameObjects = newActiveOnlyGameObjects->ToArray();
         }
     }
 

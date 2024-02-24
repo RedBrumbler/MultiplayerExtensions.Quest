@@ -5,6 +5,19 @@
 
 DEFINE_TYPE(MultiplayerExtensions::Environment, MpexAvatarPlaceLighting);
 
+static constexpr bool operator != (UnityEngine::Color a, UnityEngine::Color b) {
+    return
+        a.r != b.r ||
+        a.g != b.g ||
+        a.b != b.b ||
+        a.a != b.a
+    ;
+}
+
+static constexpr bool operator == (UnityEngine::Color a, UnityEngine::Color b) {
+    return !(a != b);
+}
+
 static constexpr inline UnityEngine::Color lerp(UnityEngine::Color a, UnityEngine::Color b, float t) {
     return {
         a.r + (b.r - a.r) * t,
@@ -18,7 +31,7 @@ namespace MultiplayerExtensions::Environment {
     void MpexAvatarPlaceLighting::ctor() {
         INVOKE_CTOR();
         INVOKE_BASE_CTOR(classof(UnityEngine::MonoBehaviour*));
-        _lights = List<GlobalNamespace::BloomPrePassLight*>::New_ctor();
+        _lights = ListW<GlobalNamespace::TubeBloomPrePassLight*>::New();
     }
 
     void MpexAvatarPlaceLighting::Inject(GlobalNamespace::IMultiplayerSessionManager* sessionManager, Utilities::SessionManagerEventPassthrough* sessionManagerEvents, GlobalNamespace::MenuLightsManager* menuLightsManager, Players::MpexPlayerManager* mpexPlayerManager) {

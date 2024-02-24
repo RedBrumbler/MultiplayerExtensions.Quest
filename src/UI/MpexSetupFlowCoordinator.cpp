@@ -40,10 +40,10 @@ namespace MultiplayerExtensions::UI {
     }
 
     void MpexSetupFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
-        parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
+        _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 
     void MpexSetupFlowCoordinator::DismissGameStartedEvent(GlobalNamespace::ILevelGameplaySetupData* _) {
-        parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, true);
+        _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, true);
     }
 }

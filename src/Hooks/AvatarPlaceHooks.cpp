@@ -10,11 +10,11 @@
 
 MAKE_AUTO_HOOK_MATCH(MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces, &::GlobalNamespace::MultiplayerLobbyAvatarPlaceManager::SpawnAllPlaces, void, GlobalNamespace::MultiplayerLobbyAvatarPlaceManager* self) {
     auto patcher = MultiplayerExtensions::Patchers::AvatarPlacePatcher::get_instance();
-    int sortIndex = self->lobbyStateDataModel->get_localPlayer()->get_sortIndex();
+    int sortIndex = self->_lobbyStateDataModel->localPlayer->sortIndex;
     if (patcher) patcher->SetSortIndex(sortIndex);
 
     MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces(self);
-    for (auto place : ListW<GlobalNamespace::MultiplayerLobbyAvatarPlace*>(self->allPlaces)) {
+    for (auto place : ListW<GlobalNamespace::MultiplayerLobbyAvatarPlace*>(self->_allPlaces)) {
         auto lighting = place->GetComponent<MultiplayerExtensions::Environment::MpexAvatarPlaceLighting*>();
         if (lighting)
             lighting->_sortIndex = sortIndex;

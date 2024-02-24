@@ -5,15 +5,16 @@
 DEFINE_TYPE(MultiplayerExtensions::Utilities, SpriteManager);
 
 #define CLEAN_SPRITE(sprite) \
-    if (sprite && sprite->m_CachedPtr.m_value)\
+    if (sprite && sprite->m_CachedPtr)\
         UnityEngine::Object::Destroy(sprite);\
     sprite = nullptr
+
 namespace MultiplayerExtensions::Utilities {
     void SpriteManager::Initialize() {
-        _oculusIcon = BSML::Utilities::LoadSpriteRaw(IncludedAssets::IconOculus64_png);
-        _steamIcon = BSML::Utilities::LoadSpriteRaw(IncludedAssets::IconSteam64_png);
-        _metaIcon = BSML::Utilities::LoadSpriteRaw(IncludedAssets::IconMeta64_png);
-        _toasterIcon = BSML::Utilities::LoadSpriteRaw(IncludedAssets::IconToaster64_png);
+        _oculusIcon = BSML::Utilities::LoadSpriteRaw(Assets::Icons::Oculus64_png);
+        _steamIcon = BSML::Utilities::LoadSpriteRaw(Assets::Icons::Steam64_png);
+        _metaIcon = BSML::Utilities::LoadSpriteRaw(Assets::Icons::Meta64_png);
+        _toasterIcon = BSML::Utilities::LoadSpriteRaw(Assets::Icons::Toaster64_png);
     }
 
     void SpriteManager::Dispose() {

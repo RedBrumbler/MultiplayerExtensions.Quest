@@ -13,7 +13,7 @@ namespace MultiplayerExtensions::UI {
 
     void MpexSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
-        BSML::parse_and_construct(IncludedAssets::MpexSettingsViewController_bsml, get_transform(), this);
+        BSML::parse_and_construct(Assets::Views::MpexSettingsViewController_bsml, get_transform(), this);
     }
 
     void MpexSettingsViewController::PostParse() {

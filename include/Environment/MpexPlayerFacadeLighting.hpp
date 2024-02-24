@@ -23,10 +23,9 @@
 #include "GlobalNamespace/MultiplayerGameplayAnimator.hpp"
 #include "GlobalNamespace/MultiplayerSyncState_3.hpp"
 #include "GlobalNamespace/StandardScoreSyncState.hpp"
-#include "GlobalNamespace/StandardScoreSyncState_Score.hpp"
 
 namespace MultiplayerExtensions::Environment {
-    using MultiplayerSyncState = ::GlobalNamespace::MultiplayerSyncState_3<GlobalNamespace::StandardScoreSyncState, GlobalNamespace::StandardScoreSyncState_Score, int>;
+    using MultiplayerSyncState = ::GlobalNamespace::MultiplayerSyncState_3<GlobalNamespace::StandardScoreSyncState, GlobalNamespace::StandardScoreSyncState::Score, int>;
 
 }
 
