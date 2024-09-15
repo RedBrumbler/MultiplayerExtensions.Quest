@@ -14,26 +14,26 @@
 #include "lapiz/shared/zenject/Zenjector.hpp"
 #include "bsml/shared/BSML.hpp"
 
-ModInfo modInfo{MOD_ID, VERSION};
+#include "_config.h"
 
-Logger& getLogger() {
-    static Logger* logger = new Logger(modInfo, LoggerOptions(false, true));
-    return *logger;
+modloader::ModInfo modInfo{MOD_ID, VERSION, VERSION_LONG};
+
+MPEX_EXPORT_FUNC void setup(CModInfo* info) {
+    info->id = MOD_ID;
+    info->version = VERSION;
+    info->version_long = VERSION_LONG;
+
+    INFO("Mod '{}' with version '{}' version long '{}' finished setup", MOD_ID, VERSION, VERSION_LONG);
 }
 
-extern "C" void setup(ModInfo& info) {
-    info = modInfo;
-}
-
-extern "C" void load() {
+MPEX_EXPORT_FUNC void late_load() {
 
     if (!LoadConfig())
         SaveConfig();
 
-    auto& logger = getLogger();
     il2cpp_functions::Init();
     custom_types::Register::AutoRegister();
-    Hooks::InstallHooks(logger);
+    MultiplayerExtensions::Hooking::InstallHooks();
     BSML::Init();
 
     auto zenjector = Lapiz::Zenject::Zenjector::Get();

@@ -10,10 +10,6 @@
 #include "GlobalNamespace/TubeBloomPrePassLight.hpp"
 #include "System/Action_1.hpp"
 
-#include "multiplayer-core/shared/Players/MpPlayerManager.hpp"
-#include "Players/MpexPlayerManager.hpp"
-#include "Players/MpexPlayerData.hpp"
-#include "Utilities/SessionManagerEventPassthrough.hpp"
 
 #include "GlobalNamespace/ColorSO.hpp"
 #include "GlobalNamespace/LightsAnimator.hpp"
@@ -22,11 +18,9 @@
 #include "GlobalNamespace/MultiplayerLeadPlayerProvider.hpp"
 #include "GlobalNamespace/MultiplayerGameplayAnimator.hpp"
 #include "GlobalNamespace/MultiplayerSyncState_3.hpp"
-#include "GlobalNamespace/StandardScoreSyncState.hpp"
-#include "GlobalNamespace/StandardScoreSyncState_Score.hpp"
 
 namespace MultiplayerExtensions::Environment {
-    using MultiplayerSyncState = ::GlobalNamespace::MultiplayerSyncState_3<GlobalNamespace::StandardScoreSyncState, GlobalNamespace::StandardScoreSyncState_Score, int>;
+    using MultiplayerSyncState = ::GlobalNamespace::MultiplayerSyncState_3<GlobalNamespace::StandardScoreSyncState, GlobalNamespace::StandardScoreSyncState::Score, int>;
 
 }
 
@@ -54,8 +48,8 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexPlayerFacadeLighti
     private:
         void HandleNewLeaderWasSelected(StringW userId);
 
-        ArrayW<GlobalNamespace::LightsAnimator*> get_allLights();
-        ArrayW<GlobalNamespace::LightsAnimator*> get_gameplayLights();
+        ArrayW<UnityW<GlobalNamespace::LightsAnimator>> get_allLights();
+        ArrayW<UnityW<GlobalNamespace::LightsAnimator>> get_gameplayLights();
 
         GlobalNamespace::ColorSO* get_activeColor();
         GlobalNamespace::ColorSO* get_leadingColor();

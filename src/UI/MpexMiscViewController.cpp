@@ -13,7 +13,7 @@ namespace MultiplayerExtensions::UI {
 
     void MpexMiscViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
-        BSML::parse_and_construct(IncludedAssets::MpexMiscViewController_bsml, get_transform(), this);
+        BSML::parse_and_construct(Assets::MpexMiscViewController_bsml, get_transform(), this);
     }
 
     bool MpexMiscViewController::get_disablePlayerColors() { return config.disableMultiplayerColors; }

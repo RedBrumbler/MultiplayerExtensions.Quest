@@ -12,9 +12,9 @@ if (-not ($LastExitCode -eq 0)) {
 }
 
 if ($debug_so.IsPresent) {
-    & adb push build/debug/libmpex.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libmpex.so
+    & adb push build/debug/libmpex.so /sdcard/ModData/com.beatgames.beatsaber/Moadloader/mods/libmpex.so
 } else {
-    & adb push build/libmpex.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libmpex.so
+    & adb push build/libmpex.so /sdcard/ModData/com.beatgames.beatsaber/Moadloader/mods/libmpex.so
 }
 
 & adb shell am force-stop com.beatgames.beatsaber

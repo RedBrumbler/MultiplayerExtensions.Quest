@@ -2,7 +2,7 @@
 #include "logging.hpp"
 #include "beatsaber-hook/shared/config/config-utils.hpp"
 
-extern ModInfo modInfo;
+extern modloader::ModInfo modInfo;
 
 UnityEngine::Color Config::defaultPlayerColor(0.031f, 0.752f, 1.0f, 1.0f);
 

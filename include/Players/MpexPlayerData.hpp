@@ -10,8 +10,8 @@
 DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Players, MpexPlayerData, Il2CppObject, classof(LiteNetLib::Utils::INetSerializable*),
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, playerColor);
 
-    DECLARE_OVERRIDE_METHOD(void, Serialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&LiteNetLib::Utils::INetSerializable::Serialize>::get(), LiteNetLib::Utils::NetDataWriter* writer);
-    DECLARE_OVERRIDE_METHOD(void, Deserialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&LiteNetLib::Utils::INetSerializable::Deserialize>::get(), LiteNetLib::Utils::NetDataReader* reader);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Serialize, &LiteNetLib::Utils::INetSerializable::Serialize, LiteNetLib::Utils::NetDataWriter* writer);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Deserialize, &LiteNetLib::Utils::INetSerializable::Deserialize, LiteNetLib::Utils::NetDataReader* reader);
     DECLARE_CTOR(ctor);
 
     public:

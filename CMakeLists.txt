@@ -1,18 +1,21 @@
 # include some defines automatically made by qpm
 include(qpm_defines.cmake)
 
-cmake_minimum_required(VERSION 3.22)
+# Enable link time optimization
+# In my experience, this can be highly unstable but it nets a huge size optimization and likely performance
+# However, the instability was seen using Android.mk/ndk-build builds. With Ninja + CMake, this problem seems to have been solved.
+# As always, test thoroughly
+# - Fern
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+cmake_minimum_required(VERSION 3.21)
 project(${COMPILE_ID})
 include(${EXTERN_DIR}/includes/kaleb/shared/cmake/assets.cmake)
 
 # c++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
-
-# Enable link time optimization
-# In my experience, this can be highly unstable but it nets a huge size optimization and likely performance
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # define that stores the actual source directory
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -31,12 +34,17 @@ add_compile_definitions(CORDL_RUNTIME_FIELD_NULL_CHECKS)
 RECURSE_FILES(cpp_file_list ${SOURCE_DIR}/*.cpp)
 RECURSE_FILES(c_file_list ${SOURCE_DIR}/*.c)
 
+file(GLOB_RECURSE inline_hook_c ${EXTERN_DIR}/includes/beatsaber-hook/shared/inline-hook/*.c)
+file(GLOB_RECURSE inline_hook_cpp ${EXTERN_DIR}/includes/beatsaber-hook/shared/inline-hook/*.cpp)
+
 # add all src files to compile
 add_library(
-    ${COMPILE_ID} 
-    SHARED
-    ${cpp_file_list}
-    ${c_file_list}
+        ${COMPILE_ID}
+        SHARED
+        ${cpp_file_list}
+        ${c_file_list}
+        ${inline_hook_c}
+        ${inline_hook_cpp}
 )
 
 # add src dir as include dir
@@ -45,10 +53,9 @@ target_include_directories(${COMPILE_ID} PRIVATE ${SOURCE_DIR})
 target_include_directories(${COMPILE_ID} PRIVATE ${INCLUDE_DIR})
 # add shared dir as include dir
 target_include_directories(${COMPILE_ID} PUBLIC ${SHARED_DIR})
-# codegen includes 
-target_include_directories(${COMPILE_ID} PRIVATE ${EXTERN_DIR}/includes/${CODEGEN_ID}/include)
 
-target_link_libraries(${COMPILE_ID} PRIVATE -llog -lz)
+add_assets(${COMPILE_ID}-assets STATIC ${CMAKE_CURRENT_LIST_DIR}/assets ${INCLUDE_DIR}/assets.hpp)
+target_link_libraries(${COMPILE_ID} PRIVATE -llog ${COMPILE_ID}-assets)
 # add extern stuff like libs and other includes
 include(extern.cmake)
 

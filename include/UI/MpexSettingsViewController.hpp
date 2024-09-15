@@ -10,7 +10,7 @@
 DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSettingsViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD_PRIVATE(BSML::ToggleSetting*, personalMissLightingToggle);
 
-    DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::HMUI::ViewController::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &::HMUI::ViewController::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_INSTANCE_METHOD(void, PostParse);
 
     DECLARE_BSML_PROPERTY(bool, hidePlayerPlatforms);

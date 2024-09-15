@@ -3,6 +3,8 @@
 
 #include "UnityEngine/Time.hpp"
 
+using namespace System::Collections::Generic;
+
 DEFINE_TYPE(MultiplayerExtensions::Environment, MpexAvatarPlaceLighting);
 
 static constexpr inline UnityEngine::Color lerp(UnityEngine::Color a, UnityEngine::Color b, float t) {
@@ -18,7 +20,7 @@ namespace MultiplayerExtensions::Environment {
     void MpexAvatarPlaceLighting::ctor() {
         INVOKE_CTOR();
         INVOKE_BASE_CTOR(classof(UnityEngine::MonoBehaviour*));
-        _lights = List<GlobalNamespace::BloomPrePassLight*>::New_ctor();
+        _lights = ListW<GlobalNamespace::TubeBloomPrePassLight*>::New();
     }
 
     void MpexAvatarPlaceLighting::Inject(GlobalNamespace::IMultiplayerSessionManager* sessionManager, Utilities::SessionManagerEventPassthrough* sessionManagerEvents, GlobalNamespace::MenuLightsManager* menuLightsManager, Players::MpexPlayerManager* mpexPlayerManager) {
@@ -81,7 +83,7 @@ namespace MultiplayerExtensions::Environment {
     }
 
     void MpexAvatarPlaceLighting::Update() {
-        auto current = GetColor();
+        auto current = static_cast<Sombrero::FastColor>(GetColor());
         if (current == _targetColor) return;
         if (_lightsManager->IsColorVeryCloseToColor(current, _targetColor))
             SetColor(_targetColor);

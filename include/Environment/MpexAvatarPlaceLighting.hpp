@@ -14,6 +14,8 @@
 #include "Players/MpexPlayerData.hpp"
 #include "Utilities/SessionManagerEventPassthrough.hpp"
 
+#include "sombrero/shared/ColorUtils.hpp"
+
 struct Hook_MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces;
 namespace MultiplayerExtensions::Patchers {
     class AvatarPlacePatcher;
@@ -25,7 +27,7 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarPlaceLightin
     DECLARE_INSTANCE_FIELD_PRIVATE(Players::MpexPlayerManager*, _mpexPlayerManager);
 
     DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<GlobalNamespace::TubeBloomPrePassLight*>, _lights, nullptr);
-    DECLARE_INSTANCE_FIELD_PRIVATE(UnityEngine::Color, _targetColor);
+    DECLARE_INSTANCE_FIELD_PRIVATE(Sombrero::FastColor, _targetColor);
     DECLARE_INSTANCE_FIELD_PRIVATE(int, _sortIndex);
 
     DECLARE_INJECT_METHOD(void, Inject, GlobalNamespace::IMultiplayerSessionManager* sessionManager, Utilities::SessionManagerEventPassthrough* sessionManagerEvents, GlobalNamespace::MenuLightsManager* menuLightsManager, Players::MpexPlayerManager* mpexPlayerManager);

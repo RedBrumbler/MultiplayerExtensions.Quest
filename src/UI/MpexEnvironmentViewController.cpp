@@ -3,7 +3,6 @@
 #include "assets.hpp"
 
 #include "bsml/shared/BSML.hpp"
-#include "GlobalNamespace/PlayerSettingsPanelController_PlayerSettingsPanelLayout.hpp"
 
 DEFINE_TYPE(MultiplayerExtensions::UI, MpexEnvironmentViewController);
 
@@ -18,7 +17,7 @@ namespace MultiplayerExtensions::UI {
 
     void MpexEnvironmentViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
-        BSML::parse_and_construct(IncludedAssets::MpexEnvironmentViewController_bsml, get_transform(), this);
+        BSML::parse_and_construct(Assets::MpexEnvironmentViewController_bsml, get_transform(), this);
     }
 
     void MpexEnvironmentViewController::PostParse() {
@@ -30,10 +29,10 @@ namespace MultiplayerExtensions::UI {
         config.soloEnvironment = value;
         SaveConfig();
         _gameplaySetup->Setup(
-            _gameplaySetup->showModifiers,
-            _gameplaySetup->showEnvironmentOverrideSettings,
-            _gameplaySetup->showColorSchemesSettings,
-            _gameplaySetup->showMultiplayer,
+            _gameplaySetup->_showModifiers,
+            _gameplaySetup->_showEnvironmentOverrideSettings,
+            _gameplaySetup->_showColorSchemesSettings,
+            _gameplaySetup->_showMultiplayer,
             GlobalNamespace::PlayerSettingsPanelController::PlayerSettingsPanelLayout::Multiplayer
         );
     }

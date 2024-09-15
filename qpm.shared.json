@@ -28,7 +28,7 @@
         ],
         "qmod": [
           "pwsh ./scripts/build.ps1 -clean",
-          "qpm-rust qmod build",
+          "qpm qmod manifest",
           "pwsh ./scripts/createqmod.ps1 MultiplayerExtensions -clean"
         ]
       },
@@ -85,6 +85,11 @@
       {
         "id": "scotland2",
         "versionRange": "^0.1.4",
+        "additionalData": {}
+      },
+      {
+        "id": "sombrero",
+        "versionRange": "^0.1.42",
         "additionalData": {}
       }
     ]
@@ -322,21 +327,6 @@
     },
     {
       "dependency": {
-        "id": "beatsaverplusplus",
-        "versionRange": "=0.1.5",
-        "additionalData": {
-          "soLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/libbeatsaverplusplus.so",
-          "debugSoLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/debug_libbeatsaverplusplus.so",
-          "overrideSoName": "libbeatsaverplusplus.so",
-          "modLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/BeatSaverPlusPlus.qmod",
-          "branchName": "version/v0_1_5",
-          "cmake": false
-        }
-      },
-      "version": "0.1.5"
-    },
-    {
-      "dependency": {
         "id": "fmt",
         "versionRange": "=10.0.0",
         "additionalData": {
@@ -353,6 +343,21 @@
         }
       },
       "version": "10.0.0"
+    },
+    {
+      "dependency": {
+        "id": "beatsaverplusplus",
+        "versionRange": "=0.1.5",
+        "additionalData": {
+          "soLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/libbeatsaverplusplus.so",
+          "debugSoLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/debug_libbeatsaverplusplus.so",
+          "overrideSoName": "libbeatsaverplusplus.so",
+          "modLink": "https://github.com/RedBrumbler/BeatSaverPlusPlus/releases/download/v0.1.5/BeatSaverPlusPlus.qmod",
+          "branchName": "version/v0_1_5",
+          "cmake": false
+        }
+      },
+      "version": "0.1.5"
     }
   ]
 }

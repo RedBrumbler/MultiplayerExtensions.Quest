@@ -2,7 +2,6 @@
 #include "config.hpp"
 
 #include "GlobalNamespace/StandardScoreSyncState.hpp"
-#include "GlobalNamespace/StandardScoreSyncState_Score.hpp"
 #include "GlobalNamespace/StandardScoreSyncStateNetSerializable.hpp"
 #include "GlobalNamespace/StandardScoreSyncStateDeltaNetSerializable.hpp"
 #include "GlobalNamespace/IScoreSyncStateManager_5.hpp"
@@ -30,7 +29,7 @@ namespace MultiplayerExtensions::Environment {
 
     void MpexPlayerFacadeLighting::OnEnable() {
         _gameplayAnimator = GetComponentInChildren<GlobalNamespace::MultiplayerGameplayAnimator*>();
-        _syncState = _scoreProvider->i_StandardScoreSyncStateDeltaNetSerializable()->GetSyncStateForPlayer(_connectedPlayer);
+        _syncState = _scoreProvider->i___GlobalNamespace__IScoreSyncStateManager_5___GlobalNamespace__StandardScoreSyncState___GlobalNamespace____StandardScoreSyncState__Score_int32_t___GlobalNamespace__StandardScoreSyncStateNetSerializable____GlobalNamespace__StandardScoreSyncStateDeltaNetSerializable__()->GetSyncStateForPlayer(_connectedPlayer);
         _handleLeaderSelectedAction = custom_types::MakeDelegate<System::Action_1<StringW>*>(
             std::function<void(StringW)>(
                 std::bind(&MpexPlayerFacadeLighting::HandleNewLeaderWasSelected, this, std::placeholders::_1)
@@ -47,7 +46,7 @@ namespace MultiplayerExtensions::Environment {
         using namespace GlobalNamespace;
         if (_multiplayerController->get_state() == MultiplayerController::State::Gameplay &&
             !ConnectedPlayerHelpers::IsFailed(_connectedPlayer)) {
-                auto combo = _syncState->GetState(StandardScoreSyncState_Score::Combo, _syncState->get_player()->get_offsetSyncTime());
+                auto combo = _syncState->GetState(StandardScoreSyncState::Score::Combo, _syncState->get_player()->get_offsetSyncTime());
                 if (combo > _highestCombo)
                     _highestCombo = combo;
 
@@ -67,19 +66,19 @@ namespace MultiplayerExtensions::Environment {
             light->SetColor(color);
     }
 
-    ArrayW<GlobalNamespace::LightsAnimator*> MpexPlayerFacadeLighting::get_allLights() {
-        return _gameplayAnimator->allLightsAnimators;
+    ArrayW<UnityW<GlobalNamespace::LightsAnimator>> MpexPlayerFacadeLighting::get_allLights() {
+        return _gameplayAnimator->_allLightsAnimators;
     }
-    ArrayW<GlobalNamespace::LightsAnimator*> MpexPlayerFacadeLighting::get_gameplayLights() {
-        return _gameplayAnimator->gameplayLightsAnimators;
+    ArrayW<UnityW<GlobalNamespace::LightsAnimator>> MpexPlayerFacadeLighting::get_gameplayLights() {
+        return _gameplayAnimator->_gameplayLightsAnimators;
     }
     GlobalNamespace::ColorSO* MpexPlayerFacadeLighting::get_activeColor() {
-        return _gameplayAnimator->activeLightsColor;
+        return _gameplayAnimator->_activeLightsColor;
     }
     GlobalNamespace::ColorSO* MpexPlayerFacadeLighting::get_leadingColor() {
-        return _gameplayAnimator->leadingLightsColor;
+        return _gameplayAnimator->_leadingLightsColor;
     }
     GlobalNamespace::ColorSO* MpexPlayerFacadeLighting::get_failedColor() {
-        return _gameplayAnimator->failedLightsColor;
+        return _gameplayAnimator->_failedLightsColor;
     }
 }

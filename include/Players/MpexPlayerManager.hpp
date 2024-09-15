@@ -20,8 +20,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Players, MpexPlayerManag
     DECLARE_INSTANCE_FIELD_PRIVATE(Utilities::SessionManagerEventPassthrough*, _sessionManagerEvents);
     DECLARE_INSTANCE_FIELD_PRIVATE(MpexPlayerDataDict*, _playerData);
 
-    DECLARE_OVERRIDE_METHOD(void, Initialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::IInitializable::Initialize>::get());
-    DECLARE_OVERRIDE_METHOD(void, Dispose, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::System::IDisposable::Dispose>::get());
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Initialize, &::Zenject::IInitializable::Initialize);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
     DECLARE_CTOR(ctor, MultiplayerCore::Networking::MpPacketSerializer* packetSerializer, Utilities::SessionManagerEventPassthrough* sessionManagerEvents);
 

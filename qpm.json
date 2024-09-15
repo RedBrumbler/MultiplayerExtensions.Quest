@@ -85,6 +85,11 @@
       "id": "scotland2",
       "versionRange": "^0.1.4",
       "additionalData": {}
+    },
+    {
+      "id": "sombrero",
+      "versionRange": "^0.1.42",
+      "additionalData": {}
     }
   ]
 }
