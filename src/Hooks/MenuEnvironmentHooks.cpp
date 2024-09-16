@@ -40,6 +40,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
     bool useTestNoteCutSoundEffects) {
         auto patcher = MultiplayerExtensions::Patchers::MenuEnvironmentPatcher::get_instance();
         if (!patcher) {
+            ERROR("MenuEnvironmentPatcher instance is null");
             MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, performancePreset, beatmapDataLoader, useTestNoteCutSoundEffects);
             return;
         }

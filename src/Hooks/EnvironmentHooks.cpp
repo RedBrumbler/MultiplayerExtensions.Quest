@@ -26,7 +26,7 @@ MAKE_AUTO_HOOK_MATCH(SceneDecoratorContext_GetInjectableMonoBehaviours, &SceneDe
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
         patcher->PreventEnvironmentInjection(self, monoBehaviours, self->_container);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
 
 MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameScenesManager::ActivatePresentedSceneRootObjects, void, List_1<StringW>* scenesToPresent) {
@@ -34,7 +34,7 @@ MAKE_AUTO_HOOK_MATCH(GameScenesManager_ActivatePresentedSceneRootObjects, &GameS
     if (patcher) {
         // prefix
         patcher->PreventEnvironmentActivation(scenesToPresent);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 
     GameScenesManager_ActivatePresentedSceneRootObjects(scenesToPresent);
 }
@@ -46,7 +46,7 @@ MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectC
     if (patcher) {
         // postfix
         patcher->InjectEnvironment(self, monoBehaviours);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
 
 MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(
@@ -70,7 +70,7 @@ MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(
             patcher->PreventEnvironmentInstall(reinterpret_cast<SceneDecoratorContext*>(self), self->_normalInstallers, self->_normalInstallerTypes, self->_scriptableObjectInstallers, self->_monoInstallers, self->_installerPrefabs);
 
         patcher->InstallEnvironment(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installerPrefabs, installerPrefabs);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 
     Context_InstallInstallers_5(self, normalInstallers, normalInstallerTypes, scriptableObjectInstallers, installers, installerPrefabs);
 }
@@ -84,7 +84,7 @@ MAKE_AUTO_HOOK_MATCH(Context_InstallSceneBindings, &Context::InstallSceneBinding
         patcher->HideOtherPlayerPlatforms(self);
         auto gameObjectContextSelf = il2cpp_utils::try_cast<Zenject::GameObjectContext>(self).value_or(nullptr);
         if (gameObjectContextSelf) patcher->ActivateEnvironment(gameObjectContextSelf);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
 
 MAKE_AUTO_HOOK_MATCH(EnvironmentSceneSetup_InstallBindings, &EnvironmentSceneSetup::InstallBindings, void, EnvironmentSceneSetup* self) {
@@ -94,6 +94,7 @@ MAKE_AUTO_HOOK_MATCH(EnvironmentSceneSetup_InstallBindings, &EnvironmentSceneSet
         if (patcher->RemoveDuplicateInstalls(self))
             EnvironmentSceneSetup_InstallBindings(self);
     } else {
+        ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
         EnvironmentSceneSetup_InstallBindings(self);
     }
 }
@@ -105,5 +106,5 @@ MAKE_AUTO_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GameplayCoreInstall
     if (patcher) {
         // postfix
         patcher->SetEnvironmentColors(self);
-    }
+    } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
