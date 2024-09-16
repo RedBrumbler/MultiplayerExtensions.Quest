@@ -24,10 +24,10 @@ namespace MultiplayerExtensions::Installers {
 
         container->BindInterfacesAndSelfTo<Patchers::ColorSchemePatcher*>()->AsSingle();
 
-        auto localPlayerRegistration = LocalActivePlayerRegistration::New_ctor("activeLocalPlayerControllerPrefab", std::bind(&GameInstaller::DecorateLocalActivePlayerFacade, this, std::placeholders::_1));
-        auto localDuelPlayerRegistration = LocalActivePlayerRegistration::New_ctor("activeLocalPlayerDuelControllerPrefab", std::bind(&GameInstaller::DecorateLocalActivePlayerFacade, this, std::placeholders::_1));
-        auto connectedPlayerRegistration = ConnectedPlayerRegistration::New_ctor("connectedPlayerControllerPrefab", std::bind(&GameInstaller::DecorateConnectedPlayerFacade, this, std::placeholders::_1));
-        auto connectedDuelPlayerRegistration = ConnectedPlayerRegistration::New_ctor("connectedPlayerDuelControllerPrefab", std::bind(&GameInstaller::DecorateConnectedPlayerFacade, this, std::placeholders::_1));
+        auto localPlayerRegistration = LocalActivePlayerRegistration::New_ctor("_activeLocalPlayerControllerPrefab", std::bind(&GameInstaller::DecorateLocalActivePlayerFacade, this, std::placeholders::_1));
+        auto localDuelPlayerRegistration = LocalActivePlayerRegistration::New_ctor("_activeLocalPlayerDuelControllerPrefab", std::bind(&GameInstaller::DecorateLocalActivePlayerFacade, this, std::placeholders::_1));
+        auto connectedPlayerRegistration = ConnectedPlayerRegistration::New_ctor("_connectedPlayerControllerPrefab", std::bind(&GameInstaller::DecorateConnectedPlayerFacade, this, std::placeholders::_1));
+        auto connectedDuelPlayerRegistration = ConnectedPlayerRegistration::New_ctor("_connectedPlayerDuelControllerPrefab", std::bind(&GameInstaller::DecorateConnectedPlayerFacade, this, std::placeholders::_1));
 
         localPlayerRegistration.RegisterRedecorator(container);
         localDuelPlayerRegistration.RegisterRedecorator(container);
