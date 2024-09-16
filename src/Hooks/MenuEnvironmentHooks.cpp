@@ -4,7 +4,6 @@
 
 #include "Patchers/MenuEnvironmentPatcher.hpp"
 
-#include "GlobalNamespace/StandardLevelScenesTransitionSetupDataSO.hpp"
 #include "GlobalNamespace/ScenesTransitionSetupDataSO.hpp"
 #include "GlobalNamespace/MultiplayerLevelScenesTransitionSetupDataSO.hpp"
 #include "GlobalNamespace/GameplaySetupViewController.hpp"
@@ -54,6 +53,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
             self->_loadedMultiplayerEnvironmentInfo = environmentInfo;
             if (patcher->_gameplaySetup->get_environmentOverrideSettings()->overrideEnvironments)
                 self->_loadedMultiplayerEnvironmentInfo = patcher->_gameplaySetup->get_environmentOverrideSettings()->GetOverrideEnvironmentInfoForType(self->_loadedMultiplayerEnvironmentInfo->get_environmentType());
+            DEBUG("Replacing Original environment info: {} with solo environment info: {}", originalEnvironmentInfo->name, self->_loadedMultiplayerEnvironmentInfo->name);
 
             MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, performancePreset, beatmapDataLoader, useTestNoteCutSoundEffects);
 
@@ -80,15 +80,21 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
 
 // we can't hook ScenesTransitionSetupDataSO_Init so we have to get creative with other hooks
 
-MAKE_AUTO_HOOK_MATCH(StandardLevelScenesTransitionSetupDataSO_InitAndSetupScenes, &::GlobalNamespace::StandardLevelScenesTransitionSetupDataSO::InitAndSetupScenes, void, ::GlobalNamespace::StandardLevelScenesTransitionSetupDataSO* self, GlobalNamespace::PlayerSpecificSettings* playerSpecificSettings, StringW backButtonText, bool startPaused)
+MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_InitAndSetupScenes, &::GlobalNamespace::MultiplayerLevelScenesTransitionSetupDataSO::InitAndSetupScenes, void, ::GlobalNamespace::MultiplayerLevelScenesTransitionSetupDataSO* self)
 {
-    StandardLevelScenesTransitionSetupDataSO_InitAndSetupScenes(self, playerSpecificSettings, backButtonText, startPaused);
+    MultiplayerLevelScenesTransitionSetupDataSO_InitAndSetupScenes(self);
+    // TODO: Possibly check sceneName here instead of name
     if (config.soloEnvironment && self->scenes->FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); })) {
+        DEBUG("At least one scenes name contains Multiplayer, adding original env info");
         ListW<::GlobalNamespace::SceneInfo*> newScenes = ListW<::GlobalNamespace::SceneInfo*>::New();
         newScenes->EnsureCapacity(self->scenes.size() + 1);
         for (auto info : self->scenes) {
             // Ensures the original environment info comes before GameCore as some mods rely on GameCore being present on the scene switch callback
-            if (info->name == "GameCore") newScenes->Add(originalEnvironmentInfo->get_sceneInfo());
+            if (info->sceneName == "GameCore") {
+                DEBUG("Adding original environment info before GameCore");
+                newScenes->Add(originalEnvironmentInfo->get_sceneInfo());
+            }
+            DEBUG("Adding scene {}", info->sceneName);
             newScenes->Add(info);
         }
         self->scenes = newScenes->ToArray();
