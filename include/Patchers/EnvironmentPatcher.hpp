@@ -18,7 +18,7 @@
 
 #include "System/IDisposable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPatcher, Il2CppObject, std::vector<Il2CppClass*>({classof(System::IDisposable*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPatcher, System::Object, std::vector<Il2CppClass*>({classof(System::IDisposable*)}),
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameScenesManager*, _scenesManager);
     DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
