@@ -42,4 +42,6 @@ MPEX_EXPORT_FUNC void late_load() {
     zenjector->Install<MultiplayerExtensions::Installers::LobbyInstaller*, GlobalNamespace::MultiplayerLobbyInstaller*>();
     zenjector->Install<MultiplayerExtensions::Installers::GameInstaller*>(Lapiz::Zenject::Location::MultiplayerCore);
     zenjector->Install<MultiplayerExtensions::Installers::LocalActivePlayerInstaller*>(Lapiz::Zenject::Location::Multi);
+
+    INFO("Mod '{}' with version '{}' version long {} finished late load", MOD_ID, VERSION, VERSION_LONG);
 }
