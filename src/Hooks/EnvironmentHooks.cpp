@@ -49,6 +49,16 @@ MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectC
     } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
 
+MAKE_AUTO_HOOK_ORIG_MATCH(DiContainer_QueueForInject, &DiContainer::QueueForInject, void, DiContainer* self, System::Object* instance)
+{
+    auto patcher = Patchers::EnvironmentPatcher::get_instance();
+    if (patcher) {
+        if (!patcher->IHateChromaTrackLaneRingInjection(instance))
+            return;
+    }
+    DiContainer_QueueForInject(self, instance);
+}
+
 MAKE_AUTO_HOOK_MATCH(Context_InstallInstallers_5, static_cast<void (Context::*)(
                                 List_1<::Zenject::InstallerBase*>*, 
                                 List_1<::System::Type*>*,
@@ -105,6 +115,6 @@ MAKE_AUTO_HOOK_MATCH(GameplayCoreInstaller_InstallBindings, &GameplayCoreInstall
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
     if (patcher) {
         // postfix
-        patcher->SetEnvironmentColors(self);
+        patcher->LightInjectionFixes(self);
     } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }

@@ -7,6 +7,7 @@
 #include "UnityEngine/Transform.hpp"
 #include "GlobalNamespace/LightWithIdManager.hpp"
 #include "GlobalNamespace/TrackLaneRingsManager.hpp"
+#include "GlobalNamespace/LightPairRotationEventEffect.hpp"
 #include "GlobalNamespace/CoreGameHUDController.hpp"
 #include "GlobalNamespace/MultiplayerPositionHUDController.hpp"
 #include "GlobalNamespace/MultiplayerLocalActivePlayerFacade.hpp"
@@ -18,6 +19,7 @@
 #include "Tweening/ColorTween.hpp"
 #include "Zenject/ConcreteIdBinderGeneric_1.hpp"
 #include "Zenject/ZenjectBinding.hpp"
+#include "Zenject/Internal/ZenUtilInternal.hpp"
 
 #include "custom-types/shared/delegate.hpp"
 
@@ -138,6 +140,18 @@ namespace MultiplayerExtensions::Patchers {
         }
     }
 
+    bool EnvironmentPatcher::IHateChromaTrackLaneRingInjection(::System::Object* instance) {
+        auto lightPairOpt = il2cpp_utils::try_cast<GlobalNamespace::LightPairRotationEventEffect>(instance);
+        if (_scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value())
+        {
+            auto lightPair = lightPairOpt.value();
+            DEBUG("Preventing TrackLaneRing {} injection, parent go name: {}", lightPair->name, lightPair->transform->parent->gameObject->name);
+            lightPair->transform->parent->gameObject->SetActive(false);
+            return false;
+        }
+        return true;
+    }
+
     void EnvironmentPatcher::InstallEnvironment(Zenject::Context* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> installers, ListW<Zenject::MonoInstaller*> installerPrefabs) {
         auto t = instance->get_transform();
         if (config.soloEnvironment && il2cpp_utils::try_cast<Zenject::GameObjectContext>(instance).has_value() && t->get_name()->Contains("LocalActivePlayer")) {
@@ -211,7 +225,7 @@ namespace MultiplayerExtensions::Patchers {
         return !container->HasBinding<GlobalNamespace::EnvironmentBrandingManager::InitData*>();
     }
 
-    void EnvironmentPatcher::SetEnvironmentColors(GlobalNamespace::GameplayCoreInstaller* instance) {
+    void EnvironmentPatcher::LightInjectionFixes(GlobalNamespace::GameplayCoreInstaller* instance) {
         if (!config.soloEnvironment || !_scenesManager->IsSceneInStack("MultiplayerEnvironment")) return;
 
         auto container = instance->Container;
@@ -221,18 +235,36 @@ namespace MultiplayerExtensions::Patchers {
 
         for (auto go : _objectsToEnable) {
             auto lightSwitchEventEffects = go->transform->GetComponentsInChildren<GlobalNamespace::LightSwitchEventEffect*>();
-            if (!lightSwitchEventEffects) {
-                WARNING("Could not get LightSwitchEventEffect, continuing");
-                continue;
-            }
-            
-            for (auto light : lightSwitchEventEffects) {
-                // We have to set this manually since BG moved the below into Start() which we can't call without causing a nullref
-                light->_usingBoostColors = false;
-                auto color = (light->_lightOnStart ? light->_lightColor0->color : GlobalNamespace::ColorExtensions::ColorWithAlpha(light->_lightColor0->color, light->_offColorIntensity));
-                auto color2 = (light->_lightOnStart ? light->_lightColor0Boost->color : GlobalNamespace::ColorExtensions::ColorWithAlpha(light->_lightColor0Boost->color, light->_offColorIntensity));
-                light->_colorTween = Tweening::ColorTween::New_ctor(color, color, custom_types::MakeDelegate<System::Action_1<UnityEngine::Color>*>(light, (std::function<void(GlobalNamespace::LightSwitchEventEffect*, UnityEngine::Color)>)&GlobalNamespace::LightSwitchEventEffect::SetColor), 0.0f, GlobalNamespace::EaseType::Linear, 0.0f);
-                light->SetupTweenAndSaveOtherColors(color, color, color2, color2);
+            auto trackLaneRingsManagers = go->transform->GetComponentsInChildren<GlobalNamespace::TrackLaneRingsManager*>();
+
+            if (lightSwitchEventEffects) {
+                for (auto light : lightSwitchEventEffects) {
+                    // We have to set this manually since BG moved the below into Start() which we can't call without causing a nullref
+                    light->_usingBoostColors = false;
+                    auto color = (light->_lightOnStart ? light->_lightColor0->color : GlobalNamespace::ColorExtensions::ColorWithAlpha(light->_lightColor0->color, light->_offColorIntensity));
+                    auto color2 = (light->_lightOnStart ? light->_lightColor0Boost->color : GlobalNamespace::ColorExtensions::ColorWithAlpha(light->_lightColor0Boost->color, light->_offColorIntensity));
+                    light->_colorTween = Tweening::ColorTween::New_ctor(color, color, custom_types::MakeDelegate<System::Action_1<UnityEngine::Color>*>(light, (std::function<void(GlobalNamespace::LightSwitchEventEffect*, UnityEngine::Color)>)&GlobalNamespace::LightSwitchEventEffect::SetColor), 0.0f, GlobalNamespace::EaseType::Linear, 0.0f);
+                    light->SetupTweenAndSaveOtherColors(color, color, color2, color2);
+                }
+            } 
+            else WARNING("Could not get LightSwitchEventEffect, continuing");
+
+            if (trackLaneRingsManagers) {
+                for (auto trackLaneRingManager : trackLaneRingsManagers)
+                {
+                    if (!trackLaneRingManager) continue;
+
+                    for (auto rings : trackLaneRingManager->Rings)
+                    {
+                        if (!rings) continue;
+
+                        DEBUG("Fixing injection and enabling go {}", rings->gameObject->name);
+                        ListW<UnityW<UnityEngine::MonoBehaviour>> injectables = ListW<UnityW<UnityEngine::MonoBehaviour>>::New();
+                        Zenject::Internal::ZenUtilInternal::GetInjectableMonoBehavioursUnderGameObject(rings->gameObject, injectables);
+                        for (auto behaviour : injectables) container->Inject(behaviour);
+                        rings->gameObject->SetActive(true);
+                    }
+                }
             }
         }
     }

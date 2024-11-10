@@ -39,12 +39,13 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPat
         void PreventEnvironmentInstall(Zenject::SceneDecoratorContext* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> monoInstallers, ListW<Zenject::MonoInstaller*> installerPrefabs);
         void PreventEnvironmentActivation(ListW<StringW> scenesToPresent);
         void InjectEnvironment(Zenject::GameObjectContext* instance, ListW<UnityEngine::MonoBehaviour*> monoBehaviours);
+        bool IHateChromaTrackLaneRingInjection(::System::Object* instance);
         void InstallEnvironment(Zenject::Context* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> installers, ListW<Zenject::MonoInstaller*> installerPrefabs);
         void LoveYouCountersPlus(Zenject::GameObjectContext* instance);
         void ActivateEnvironment(Zenject::GameObjectContext* instance);
         void HideOtherPlayerPlatforms(Zenject::Context* instance);
         bool RemoveDuplicateInstalls(GlobalNamespace::EnvironmentSceneSetup* instance);
-        void SetEnvironmentColors(GlobalNamespace::GameplayCoreInstaller* instance);
+        void LightInjectionFixes(GlobalNamespace::GameplayCoreInstaller* instance);
     private:
         static EnvironmentPatcher* instance;
 )
