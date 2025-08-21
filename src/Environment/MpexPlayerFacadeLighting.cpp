@@ -29,7 +29,7 @@ namespace MultiplayerExtensions::Environment {
 
     void MpexPlayerFacadeLighting::OnEnable() {
         _gameplayAnimator = GetComponentInChildren<GlobalNamespace::MultiplayerGameplayAnimator*>();
-        _syncState = _scoreProvider->i___GlobalNamespace__IScoreSyncStateManager_5___GlobalNamespace__StandardScoreSyncState___GlobalNamespace____StandardScoreSyncState__Score_int32_t___GlobalNamespace__StandardScoreSyncStateNetSerializable____GlobalNamespace__StandardScoreSyncStateDeltaNetSerializable__()->GetSyncStateForPlayer(_connectedPlayer);
+        _syncState = _scoreProvider->i___GlobalNamespace__IScoreSyncStateManager_5___GlobalNamespace__StandardScoreSyncState___GlobalNamespace__StandardScoreSyncState_Score_int32_t___GlobalNamespace__StandardScoreSyncStateNetSerializable____GlobalNamespace__StandardScoreSyncStateDeltaNetSerializable__()->GetSyncStateForPlayer(_connectedPlayer);
         _handleLeaderSelectedAction = custom_types::MakeDelegate<System::Action_1<StringW>*>(
             std::function<void(StringW)>(
                 std::bind(&MpexPlayerFacadeLighting::HandleNewLeaderWasSelected, this, std::placeholders::_1)

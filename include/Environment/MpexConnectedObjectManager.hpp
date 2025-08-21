@@ -9,7 +9,7 @@
 #include "GlobalNamespace/BeatmapObjectManager.hpp"
 #include "System/Action_1.hpp"
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexConnectedObjectManager, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexConnectedObjectManager, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD_PRIVATE(System::Action_1<bool>*, _observedChangedEvent);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MultiplayerConnectedPlayerSpectatingSpot*, _playerSpectatingSpot);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IConnectedPlayerBeatmapObjectEventManager*, _beatmapObjectEventManager);
@@ -20,4 +20,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexConnectedObjectMan
     DECLARE_INSTANCE_METHOD(void, HandleIsObservedChangedEvent, bool isObserved);
 
     DECLARE_INJECT_METHOD(void, Inject, GlobalNamespace::MultiplayerConnectedPlayerSpectatingSpot* playerSpectatingSpot, GlobalNamespace::IConnectedPlayerBeatmapObjectEventManager* beatmapObjectEventManager, GlobalNamespace::BeatmapObjectManager* beatmapObjectManager);
-)
+};

@@ -8,7 +8,7 @@
 
 struct Hook_MultiplayerLevelScenesTransitionSetupDataSO_Init;
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, MenuEnvironmentPatcher, System::Object, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, MenuEnvironmentPatcher, System::Object, System::IDisposable*) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameplaySetupViewController*, _gameplaySetup);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::EnvironmentsListModel*, _environmentsListModel);
     DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
@@ -20,4 +20,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, MenuEnvironmen
     private:
         friend ::Hook_MultiplayerLevelScenesTransitionSetupDataSO_Init;
         static MenuEnvironmentPatcher* instance;
-)
+};

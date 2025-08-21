@@ -34,13 +34,13 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
     ::GlobalNamespace::PlayerSpecificSettings* playerSpecificSettings,
     ::GlobalNamespace::PracticeSettings* practiceSettings,
     ::GlobalNamespace::AudioClipAsyncLoader* audioClipAsyncLoader,
-    ::BeatSaber::PerformancePresets::PerformancePreset* performancePreset,
+    ::GlobalNamespace::SettingsManager* settingsManager,
     ::GlobalNamespace::BeatmapDataLoader * beatmapDataLoader,
     bool useTestNoteCutSoundEffects) {
         auto patcher = MultiplayerExtensions::Patchers::MenuEnvironmentPatcher::get_instance();
         if (!patcher) {
             ERROR("MenuEnvironmentPatcher instance is null");
-            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, performancePreset, beatmapDataLoader, useTestNoteCutSoundEffects);
+            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, settingsManager, beatmapDataLoader, useTestNoteCutSoundEffects);
             return;
         }
 
@@ -55,7 +55,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
                 self->_loadedMultiplayerEnvironmentInfo = patcher->_gameplaySetup->get_environmentOverrideSettings()->GetOverrideEnvironmentInfoForType(self->_loadedMultiplayerEnvironmentInfo->get_environmentType());
             DEBUG("Replacing Original environment info: {} with solo environment info: {}", originalEnvironmentInfo->name, self->_loadedMultiplayerEnvironmentInfo->name);
 
-            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, performancePreset, beatmapDataLoader, useTestNoteCutSoundEffects);
+            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, settingsManager, beatmapDataLoader, useTestNoteCutSoundEffects);
 
             // auto multiScene = self->scenes->FirstOrDefault([](auto s){ return s->get_name()->Contains("Multiplayer"); });
             // if (multiScene) {
@@ -74,7 +74,7 @@ MAKE_AUTO_HOOK_MATCH(MultiplayerLevelScenesTransitionSetupDataSO_Init, &::Global
             // postfix, restore original info
             self->_loadedMultiplayerEnvironmentInfo = originalEnvironmentInfo;
         } else {
-            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, performancePreset, beatmapDataLoader, useTestNoteCutSoundEffects);
+            MultiplayerLevelScenesTransitionSetupDataSO_Init(self, gameMode, beatmapKey, beatmapLevel, beatmapLevelData, overrideColorScheme, gameplayModifiers, playerSpecificSettings, practiceSettings, audioClipAsyncLoader, settingsManager, beatmapDataLoader, useTestNoteCutSoundEffects);
         }
 }
 

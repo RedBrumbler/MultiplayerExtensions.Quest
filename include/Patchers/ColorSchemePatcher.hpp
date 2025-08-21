@@ -5,7 +5,7 @@
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "System/IDisposable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, ColorSchemePatcher, System::Object, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, ColorSchemePatcher, System::Object, System::IDisposable*) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameplayCoreSceneSetupData*, _sceneSetupData);
     DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
@@ -16,4 +16,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, ColorSchemePat
         GlobalNamespace::ColorScheme* get_colorScheme();
     private:
         static ColorSchemePatcher* instance;
-)
+};

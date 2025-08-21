@@ -7,7 +7,7 @@
 
 #include "HMUI/ViewController.hpp"
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSettingsViewController, HMUI::ViewController,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSettingsViewController, HMUI::ViewController) {
     DECLARE_INSTANCE_FIELD_PRIVATE(BSML::ToggleSetting*, personalMissLightingToggle);
 
     DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &::HMUI::ViewController::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
@@ -20,4 +20,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSettingsViewController, HMU
     DECLARE_BSML_PROPERTY(bool, personalMissLightingOnly);
 
     DECLARE_CTOR(ctor);
-)
+};

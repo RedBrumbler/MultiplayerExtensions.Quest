@@ -15,7 +15,7 @@
 #include "MpexEnvironmentViewController.hpp"
 #include "MpexMiscViewController.hpp"
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSetupFlowCoordinator, HMUI::FlowCoordinator,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSetupFlowCoordinator, HMUI::FlowCoordinator) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MainFlowCoordinator*, _mainFlowCoordinator);
     DECLARE_INSTANCE_FIELD_PRIVATE(MpexSettingsViewController*, _settingsViewController);
     DECLARE_INSTANCE_FIELD_PRIVATE(MpexEnvironmentViewController*, _environmentViewController);
@@ -31,4 +31,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexSetupFlowCoordinator, HMUI:
     DECLARE_CTOR(ctor);
     private:
         void DismissGameStartedEvent(GlobalNamespace::ILevelGameplaySetupData* _);
-)
+};

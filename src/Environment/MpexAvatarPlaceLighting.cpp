@@ -2,6 +2,7 @@
 #include "config.hpp"
 
 #include "UnityEngine/Time.hpp"
+#include <cstdlib>
 
 using namespace System::Collections::Generic;
 
@@ -85,10 +86,14 @@ namespace MultiplayerExtensions::Environment {
     void MpexAvatarPlaceLighting::Update() {
         auto current = static_cast<Sombrero::FastColor>(GetColor());
         if (current == _targetColor) return;
-        if (_lightsManager->IsColorVeryCloseToColor(current, _targetColor))
+        if (IsColorVeryCloseToColor(current, _targetColor))
             SetColor(_targetColor);
         else
             SetColor(lerp(current, _targetColor, UnityEngine::Time::get_deltaTime() * SMOOTH_TIME));
+    }
+
+    bool MpexAvatarPlaceLighting::IsColorVeryCloseToColor(UnityEngine::Color color0, UnityEngine::Color color1) {
+        return std::abs(color0.r - color1.r) < 0.002f && std::abs(color0.g - color1.g) < 0.002f && std::abs(color0.b - color1.b) < 0.002f && std::abs(color0.a - color1.a) < 0.002f;
     }
 
     void MpexAvatarPlaceLighting::SetColor(UnityEngine::Color color, bool immedate) {

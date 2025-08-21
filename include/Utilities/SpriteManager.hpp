@@ -6,7 +6,7 @@
 #include "Zenject/IInitializable.hpp"
 #include "System/IDisposable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Utilities, SpriteManager, System::Object, std::vector<Il2CppClass*>({classof(Zenject::IInitializable*), classof(System::IDisposable*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Utilities, SpriteManager, System::Object, Zenject::IInitializable*, System::IDisposable*) {
     DECLARE_INSTANCE_FIELD_PRIVATE(UnityEngine::Sprite*, _oculusIcon);
     DECLARE_INSTANCE_FIELD_PRIVATE(UnityEngine::Sprite*, _steamIcon);
     DECLARE_INSTANCE_FIELD_PRIVATE(UnityEngine::Sprite*, _metaIcon);
@@ -22,4 +22,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Utilities, SpriteManager
         UnityEngine::Sprite* get_steamIcon() const { return _steamIcon; }
         UnityEngine::Sprite* get_metaIcon() const { return _metaIcon; }
         UnityEngine::Sprite* get_toasterIcon() const { return _toasterIcon; }
-)
+};

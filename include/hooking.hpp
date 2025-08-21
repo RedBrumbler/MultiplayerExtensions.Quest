@@ -36,36 +36,36 @@ namespace MultiplayerExtensions {
 #define AUTO_INSTALL_PATCH(name_) \
     struct Auto_Patch_##name_ {                                                 \
         Auto_Patch_##name_() {                                                  \
-            ::MultiplayerExtensions::Hooking::AddInstallFunc(Patch_##name_);    \
+            ::MultiplayerExtensions::Hooking::AddInstallFunc(Patch_##name_);          \
         }                                                                       \
     };                                                                          \
     static Auto_Patch_##name_ Auto_Patch_Instance_##name_
 
-#define HOOK_AUTO_INSTALL_ORIG(name_)                                                                           \
-    struct Auto_Hook_##name_ {                                                                                  \
-        static void Auto_Hook_##name_##_Install() {                                                             \
-            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);                \
-            ::Hooking::InstallOrigHook<Hook_##name_>(logger);                                                   \
-        }                                                                                                       \
-        Auto_Hook_##name_() { ::MultiplayerExtensions::Hooking::AddInstallFunc(Auto_Hook_##name_##_Install); }  \
-    };                                                                                                          \
+#define HOOK_AUTO_INSTALL_ORIG(name_)                                                                       \
+    struct Auto_Hook_##name_ {                                                                              \
+        static void Auto_Hook_##name_##_Install() {                                                         \
+            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);            \
+            ::Hooking::InstallOrigHook<Hook_##name_>(logger);                                               \
+        }                                                                                                   \
+        Auto_Hook_##name_() { ::MultiplayerExtensions::Hooking::AddInstallFunc(Auto_Hook_##name_##_Install); }    \
+    };                                                                                                      \
     static Auto_Hook_##name_ Auto_Hook_Instance_##name_
 
-#define HOOK_AUTO_INSTALL(name_)                                                                                \
-    struct Auto_Hook_##name_ {                                                                                  \
-        static void Auto_Hook_##name_##_Install() {                                                             \
-            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);                \
-            ::Hooking::InstallHook<Hook_##name_>(logger);                                                       \
-        }                                                                                                       \
-        Auto_Hook_##name_() { ::MultiplayerExtensions::Hooking::AddInstallFunc(Auto_Hook_##name_##_Install); }  \
-    };                                                                                                          \
+#define HOOK_AUTO_INSTALL(name_)                                                                            \
+    struct Auto_Hook_##name_ {                                                                              \
+        static void Auto_Hook_##name_##_Install() {                                                         \
+            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);            \
+            ::Hooking::InstallHook<Hook_##name_>(logger);                                                   \
+        }                                                                                                   \
+        Auto_Hook_##name_() { ::MultiplayerExtensions::Hooking::AddInstallFunc(Auto_Hook_##name_##_Install); }    \
+    };                                                                                                      \
     static Auto_Hook_##name_ Auto_Hook_Instance_##name_
 
 #define MAKE_AUTO_HOOK_MATCH(name_, mPtr, retval, ...)                                                                                              \
     struct Hook_##name_                                                                                                                             \
     {                                                                                                                                               \
         using funcType = retval (*)(__VA_ARGS__);                                                                                                   \
-        static_assert(MultiplayerExtensions::match_hookable<mPtr>);                                                                                 \
+        static_assert(MultiplayerExtensions::match_hookable<mPtr>);                                                                                       \
         static_assert(std::is_same_v<funcType, ::Hooking::InternalMethodCheck<decltype(mPtr)>::funcType>, "Hook method signature does not match!"); \
         constexpr static const char* name() { return #name_; }                                                                                      \
         static const MethodInfo* getInfo() { return ::il2cpp_utils::il2cpp_type_check::MetadataGetter<mPtr>::methodInfo(); }                        \
@@ -94,7 +94,7 @@ namespace MultiplayerExtensions {
     struct Hook_##name_                                                                                                                             \
     {                                                                                                                                               \
         using funcType = retval (*)(__VA_ARGS__);                                                                                                   \
-        static_assert(MultiplayerExtensions::match_hookable<mPtr>);                                                                                 \
+        static_assert(MultiplayerExtensions::match_hookable<mPtr>);                                                                                       \
         static_assert(std::is_same_v<funcType, ::Hooking::InternalMethodCheck<decltype(mPtr)>::funcType>, "Hook method signature does not match!"); \
         constexpr static const char* name() { return #name_; }                                                                                      \
         static const MethodInfo* getInfo() { return ::il2cpp_utils::il2cpp_type_check::MetadataGetter<mPtr>::methodInfo(); }                        \

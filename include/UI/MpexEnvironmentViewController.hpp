@@ -8,7 +8,7 @@
 #include "bsml/shared/BSML/Components/Settings/IncrementSetting.hpp"
 #include "GlobalNamespace/GameplaySetupViewController.hpp"
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexEnvironmentViewController, HMUI::ViewController,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexEnvironmentViewController, HMUI::ViewController) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameplaySetupViewController*, _gameplaySetup);
     DECLARE_INSTANCE_FIELD_PRIVATE(BSML::IncrementSetting*, sideBySideDistanceIncrement);
 
@@ -20,4 +20,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::UI, MpexEnvironmentViewController, 
     DECLARE_BSML_PROPERTY(bool, sideBySide);
     DECLARE_BSML_PROPERTY(float, sideBySideDistance);
     DECLARE_CTOR(ctor);
-)
+};

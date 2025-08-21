@@ -18,7 +18,7 @@
 
 using IconDict = System::Collections::Generic::Dictionary_2<MultiplayerExtensions::Environment::PlayerIconSlot, HMUI::ImageView*>;
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarNameTag, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarNameTag, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD_PRIVATE(IconDict*, _playerIcons);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IConnectedPlayer*, _player);
     DECLARE_INSTANCE_FIELD_PRIVATE(MultiplayerCore::Players::MpPlayerManager*, _playerManager);
@@ -42,4 +42,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarNameTag, Uni
         void SetIcon(PlayerIconSlot slot, UnityEngine::Sprite* icon);
 
         HMUI::ImageView* CreateIcon();
-)
+};

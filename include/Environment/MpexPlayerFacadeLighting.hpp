@@ -24,7 +24,7 @@ namespace MultiplayerExtensions::Environment {
 
 }
 
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexPlayerFacadeLighting, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexPlayerFacadeLighting, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IConnectedPlayer*, _connectedPlayer);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MultiplayerController*, _multiplayerController);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IScoreSyncStateManager*, _scoreProvider);
@@ -54,4 +54,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexPlayerFacadeLighti
         GlobalNamespace::ColorSO* get_activeColor();
         GlobalNamespace::ColorSO* get_leadingColor();
         GlobalNamespace::ColorSO* get_failedColor();
-)
+};

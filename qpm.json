@@ -8,7 +8,8 @@
     "version": "0.1.0",
     "url": "https://github.com/RedBrumbler/MultiplayerExtensions.Quest",
     "additionalData": {
-      "overrideSoName": "libmpex.so"
+      "overrideSoName": "libmpex.so",
+      "cmake": true
     }
   },
   "workspace": {
@@ -33,47 +34,48 @@
     },
     "qmodIncludeDirs": [],
     "qmodIncludeFiles": [],
-    "qmodOutput": null
+    "qmodOutput": null,
+    "ndk": "^27.2.12479018"
   },
   "dependencies": [
     {
       "id": "libil2cpp",
-      "versionRange": "^0.3.2",
+      "versionRange": "^0.4.0",
       "additionalData": {}
     },
     {
       "id": "beatsaber-hook",
-      "versionRange": "^5.1.9",
+      "versionRange": "^6.4.2",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.17.10",
+      "versionRange": "^0.18.3",
       "additionalData": {}
     },
     {
       "id": "multiplayer-core",
-      "versionRange": "^1.5.0",
+      "versionRange": "^1.6.4",
       "additionalData": {}
     },
     {
-      "id": "paper",
-      "versionRange": "^3.6.4",
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.4",
       "additionalData": {}
     },
     {
       "id": "lapiz",
-      "versionRange": "^0.2.12",
+      "versionRange": "^0.2.23",
       "additionalData": {}
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.43",
+      "versionRange": "^0.4.55",
       "additionalData": {}
     },
     {
       "id": "bs-cordl",
-      "versionRange": "^3700.0.0",
+      "versionRange": "4008.*",
       "additionalData": {}
     },
     {
@@ -83,7 +85,7 @@
     },
     {
       "id": "scotland2",
-      "versionRange": "^0.1.4",
+      "versionRange": "^0.1.6",
       "additionalData": {
         "includeQmod": false,
         "private": true

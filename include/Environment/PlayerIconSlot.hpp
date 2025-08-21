@@ -21,7 +21,7 @@ static_assert(sizeof(MultiplayerExtensions::Environment::PlayerIconSlot) == size
 template <> struct fmt::formatter<::MultiplayerExtensions::Environment::PlayerIconSlot> : formatter<string_view> {
     // parse is inherited from formatter<string_view>.
     template <typename FormatContext>
-    auto format(::MultiplayerExtensions::Environment::PlayerIconSlot c, FormatContext& ctx) {
+    auto format(::MultiplayerExtensions::Environment::PlayerIconSlot c, FormatContext& ctx) const {
         switch (c) {
             case MultiplayerExtensions::Environment::PlayerIconSlot::Platform:
                 return formatter<string_view>::format("Platform", ctx);;

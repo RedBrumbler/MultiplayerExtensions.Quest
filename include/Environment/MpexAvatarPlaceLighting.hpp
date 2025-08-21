@@ -20,7 +20,7 @@ struct Hook_MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces;
 namespace MultiplayerExtensions::Patchers {
     class AvatarPlacePatcher;
 }
-DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarPlaceLighting, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarPlaceLighting, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::IMultiplayerSessionManager*, _sessionManager);
     DECLARE_INSTANCE_FIELD_PRIVATE(Utilities::SessionManagerEventPassthrough*, _sessionManagerEvents);
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::MenuLightsManager*, _lightsManager);
@@ -36,6 +36,7 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarPlaceLightin
     DECLARE_INSTANCE_METHOD(void, Update);
     DECLARE_INSTANCE_METHOD(void, OnEnable);
     DECLARE_INSTANCE_METHOD(void, OnDisable);
+    DECLARE_INSTANCE_METHOD(bool, IsColorVeryCloseToColor, UnityEngine::Color color0, UnityEngine::Color color1);
 
     DECLARE_CTOR(ctor);
     public:
@@ -51,4 +52,4 @@ DECLARE_CLASS_CODEGEN(MultiplayerExtensions::Environment, MpexAvatarPlaceLightin
         friend ::Hook_MultiplayerLobbyAvatarPlaceManager_SpawnAllPlaces;
         friend ::MultiplayerExtensions::Patchers::AvatarPlacePatcher;
         void SetColor(UnityEngine::Color color);
-)
+};

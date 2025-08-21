@@ -5,7 +5,7 @@
 #include "GlobalNamespace/MenuEnvironmentManager.hpp"
 #include "System/IDisposable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Environment, MpexLevelEndActions, System::Object, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Environment, MpexLevelEndActions, System::Object, System::IDisposable*) {
     DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
     DECLARE_CTOR(ctor);
@@ -16,4 +16,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Environment, MpexLevelEn
         UnorderedEventCallback<> LevelFinishedEvent;
     private:
         static MpexLevelEndActions* instance;
-)
+};

@@ -6,11 +6,14 @@
   "porter": "RedBrumbler",
   "version": "${version}",
   "packageId": "com.beatgames.beatsaber",
-  "packageVersion": "1.37.0_9064817954",
+  "packageVersion": "1.40.8_7379",
   "description": "Port of MultiplayerExtensions, the PC mod that adds extra features to multiplayer",
   "coverImage": "Cover.png",
   "dependencies": [],
   "modFiles": [],
+  "lateModFiles": [
+    "${binary}"
+  ],
   "libraryFiles": [],
   "fileCopies": [],
   "copyExtensions": []

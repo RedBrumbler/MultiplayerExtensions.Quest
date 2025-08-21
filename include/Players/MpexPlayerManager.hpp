@@ -15,7 +15,7 @@
 #include "System/Collections/Concurrent/ConcurrentDictionary_2.hpp"
 
 using MpexPlayerDataDict = System::Collections::Concurrent::ConcurrentDictionary_2<StringW, MultiplayerExtensions::Players::MpexPlayerData*>;
-DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Players, MpexPlayerManager, System::Object, std::vector<Il2CppClass*>({classof(Zenject::IInitializable*), classof(System::IDisposable*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Players, MpexPlayerManager, System::Object, Zenject::IInitializable*, System::IDisposable*) {
     DECLARE_INSTANCE_FIELD_PRIVATE(MultiplayerCore::Networking::MpPacketSerializer*, _packetSerializer);
     DECLARE_INSTANCE_FIELD_PRIVATE(Utilities::SessionManagerEventPassthrough*, _sessionManagerEvents);
     DECLARE_INSTANCE_FIELD_PRIVATE(MpexPlayerDataDict*, _playerData);
@@ -33,4 +33,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Players, MpexPlayerManag
     private:
         void HandlePlayerConnected(GlobalNamespace::IConnectedPlayer* player);
         void HandlePlayerData(MpexPlayerData* packet, GlobalNamespace::IConnectedPlayer* player);
-)
+};
