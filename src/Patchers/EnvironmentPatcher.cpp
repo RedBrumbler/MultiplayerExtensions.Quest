@@ -22,6 +22,7 @@
 #include "Zenject/Internal/ZenUtilInternal.hpp"
 
 #include "custom-types/shared/delegate.hpp"
+#include <regex>
 
 DEFINE_TYPE(MultiplayerExtensions::Patchers, EnvironmentPatcher);
 
@@ -33,6 +34,8 @@ namespace MultiplayerExtensions::Patchers {
         INVOKE_CTOR();
         instance = this;
         _scenesManager = scenesManager;
+        CModInfo chromaModInfo = {"chroma"};
+        _chromaLoaded = modloader_get_mod(&chromaModInfo, CMatchType::MatchType_IdOnly).handle;
     }
 
     void EnvironmentPatcher::Dispose() {
@@ -142,7 +145,7 @@ namespace MultiplayerExtensions::Patchers {
 
     bool EnvironmentPatcher::IHateChromaTrackLaneRingInjection(::System::Object* instance) {
         auto lightPairOpt = il2cpp_utils::try_cast<GlobalNamespace::LightPairRotationEventEffect>(instance);
-        if (_scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value())
+        if (_chromaLoaded && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value())
         {
             auto lightPair = lightPairOpt.value();
             DEBUG("Preventing TrackLaneRing {} injection, parent go name: {}", lightPair->name, lightPair->transform->parent->gameObject->name);
@@ -249,7 +252,7 @@ namespace MultiplayerExtensions::Patchers {
             } 
             else WARNING("Could not get LightSwitchEventEffect, continuing");
 
-            if (trackLaneRingsManagers) {
+            if (_chromaLoaded && trackLaneRingsManagers) {
                 for (auto trackLaneRingManager : trackLaneRingsManagers)
                 {
                     if (!trackLaneRingManager) continue;

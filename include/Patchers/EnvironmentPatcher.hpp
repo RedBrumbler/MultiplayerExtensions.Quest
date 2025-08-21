@@ -30,6 +30,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPat
     DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<Zenject::MonoInstaller*>, _installerPrefabs, ListW<Zenject::MonoInstaller*>::New());
     DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::GameObject*>, _objectsToEnable, ListW<UnityEngine::GameObject*>::New());
 
+DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(bool, _chromaLoaded, false);
+
     DECLARE_CTOR(ctor, GlobalNamespace::GameScenesManager* scenesManager);
 
     public:
