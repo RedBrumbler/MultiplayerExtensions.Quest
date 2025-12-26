@@ -32,15 +32,6 @@ Visual Studio Code is recommended, ensure your environment is setup for quest mo
 ### Testing
 MultiplayerExtensions and other multiplayer mods may not work without a compatible private server to play on. It is designed for [BeatTogether](https://github.com/BeatTogether/BeatTogether), which comes in the form of it's [Master](https://github.com/pythonology/BeatTogether.MasterServer) and [Dedicated](https://github.com/pythonology/BeatTogether.DedicatedServer) servers. If you are looking to update this mod to a newer version, these servers will also need to be up to date and working for that version. You can gain access to their private beta by donating on their [patreon](https://www.patreon.com/BeatTogether). Alternatively, you can set up your own cluster.
 
-**Example csproj.user File:**
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <BeatSaberDir>Full\Path\To\Beat Saber</BeatSaberDir>
-  </PropertyGroup>
-</Project>
-```
 ## Donate
 You can support development of MultiplayerExtensions by donating at the following links:
 * https://github.com/sponsors/michael-r-elp
