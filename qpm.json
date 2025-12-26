@@ -5,8 +5,8 @@
   "info": {
     "name": "MultiplayerExtensions",
     "id": "multiplayer-extensions",
-    "version": "0.1.0",
-    "url": "https://github.com/RedBrumbler/MultiplayerExtensions.Quest",
+    "version": "1.1.0",
+    "url": "https://github.com/EnderdracheLP/MultiplayerExtensions.Quest",
     "additionalData": {
       "overrideSoName": "libmpex.so",
       "cmake": true
@@ -55,7 +55,7 @@
     },
     {
       "id": "multiplayer-core",
-      "versionRange": "^1.6.4",
+      "versionRange": "^1.6.5",
       "additionalData": {}
     },
     {

@@ -34,8 +34,9 @@ namespace MultiplayerExtensions::Patchers {
         INVOKE_CTOR();
         instance = this;
         _scenesManager = scenesManager;
-        CModInfo chromaModInfo = {"chroma"};
-        _chromaLoaded = modloader_get_mod(&chromaModInfo, CMatchType::MatchType_IdOnly).handle;
+        CModInfo chromaModInfo1 = {"Chroma"};
+        CModInfo chromaModInfo2 = {"chroma"};
+        _chromaLoaded = modloader_get_mod(&chromaModInfo1, CMatchType::MatchType_IdOnly).handle || modloader_get_mod(&chromaModInfo2, CMatchType::MatchType_IdOnly).handle;
     }
 
     void EnvironmentPatcher::Dispose() {
@@ -145,10 +146,14 @@ namespace MultiplayerExtensions::Patchers {
 
     bool EnvironmentPatcher::IHateChromaTrackLaneRingInjection(::System::Object* instance) {
         auto lightPairOpt = il2cpp_utils::try_cast<GlobalNamespace::LightPairRotationEventEffect>(instance);
-        if (_chromaLoaded && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value())
+        if (_chromaLoaded && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value() && lightPairOpt.value()->transform->parent->gameObject->name.ends_with("(Chroma)"))
         {
             auto lightPair = lightPairOpt.value();
-            DEBUG("Preventing TrackLaneRing {} injection, parent go name: {}", lightPair->name, lightPair->transform->parent->gameObject->name);
+
+            // DEBUG("CHECK BACKTRACE FOR CHROMA PATCH");
+            // Paper::Logger::Backtrace(MOD_ID, 10);
+
+            DEBUG("Preventing early TrackLaneRing {} injection, go name: {}, parent go name: {}", lightPair->name, lightPair->gameObject->name, lightPair->transform->parent->gameObject->name);
             lightPair->transform->parent->gameObject->SetActive(false);
             return false;
         }
@@ -259,9 +264,9 @@ namespace MultiplayerExtensions::Patchers {
 
                     for (auto rings : trackLaneRingManager->Rings)
                     {
-                        if (!rings) continue;
+                        if (!rings || !rings->gameObject->name.ends_with("(Chroma)")) continue;
 
-                        DEBUG("Fixing injection and enabling go {}", rings->gameObject->name);
+                        DEBUG("Fixing chroma injection and enabling go {}", rings->gameObject->name);
                         ListW<UnityW<UnityEngine::MonoBehaviour>> injectables = ListW<UnityW<UnityEngine::MonoBehaviour>>::New();
                         Zenject::Internal::ZenUtilInternal::GetInjectableMonoBehavioursUnderGameObject(rings->gameObject, injectables);
                         for (auto behaviour : injectables) container->Inject(behaviour);
