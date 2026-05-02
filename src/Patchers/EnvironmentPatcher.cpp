@@ -22,6 +22,7 @@
 #include "Zenject/Internal/ZenUtilInternal.hpp"
 
 #include "custom-types/shared/delegate.hpp"
+#include "songcore/shared/SongCore.hpp"
 #include <regex>
 
 DEFINE_TYPE(MultiplayerExtensions::Patchers, EnvironmentPatcher);
@@ -34,6 +35,7 @@ namespace MultiplayerExtensions::Patchers {
         INVOKE_CTOR();
         instance = this;
         _scenesManager = scenesManager;
+        _chromaInjected = false;
         CModInfo chromaModInfo1 = {"Chroma"};
         CModInfo chromaModInfo2 = {"chroma"};
         _chromaLoaded = modloader_get_mod(&chromaModInfo1, CMatchType::MatchType_IdOnly).handle || modloader_get_mod(&chromaModInfo2, CMatchType::MatchType_IdOnly).handle;
@@ -141,21 +143,51 @@ namespace MultiplayerExtensions::Patchers {
             INFO("Injecting Environment");
 
             monoBehaviours->AddRange(_behavioursToInject->i___System__Collections__Generic__IEnumerable_1_T_());
+            // Check if the list contains the LightPairRotationEventEffect which is used for the track lane ring lights, and if so, set _chromaInjected to false since this likely means it's not chroma injection
+            bool hasLightPairRotationEventEffect = false;
+            for (auto mb : _behavioursToInject) {
+                if (il2cpp_utils::try_cast<GlobalNamespace::LightPairRotationEventEffect>(mb).has_value()) {
+                    _chromaInjected = false;
+                    break;
+                }
+            }
+            if (hasLightPairRotationEventEffect) {
+                INFO("LightPairRotationEventEffect found in behaviours to inject, this likely means it's not chroma injection");
+                _chromaInjected = false;
+            } else {
+                INFO("No LightPairRotationEventEffect found in behaviours to inject, this likely means it's chroma injection");
+            }
+            
+        }
+    }
+
+    void EnvironmentPatcher::CheckTrackLaneRingInjectionStart(GlobalNamespace::TrackLaneRingsManager* instance) {
+        // TODO: Possibly use event for checking capability
+        if (SongCore::API::Capabilities::IsCapabilityRegistered("Chroma") && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment) {
+            INFO("Chroma detected, we have the multiplayer environment with solo environment enabled, and SongCore capabilities contain Chroma, assuming light will be injected by chroma, setting _chromaInjected to true");
+            // We will always assume chroma injection if we're in the multiplayer environment with solo environment enabled and SongCore capabilities contain Chroma.
+            // The actual check happens above in the InjectEnvironment patch, due to the order in which the functions run, between a basegame and chroma injection
+            _chromaInjected = true;
         }
     }
 
     bool EnvironmentPatcher::IHateChromaTrackLaneRingInjection(::System::Object* instance) {
         auto lightPairOpt = il2cpp_utils::try_cast<GlobalNamespace::LightPairRotationEventEffect>(instance);
-        if (_chromaLoaded && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value() && lightPairOpt.value()->transform->parent->gameObject->name.ends_with("(Chroma)"))
+        // TODO: Possibly use event for checking capability
+        if (SongCore::API::Capabilities::IsCapabilityRegistered("Chroma")  && _scenesManager->IsSceneInStack("MultiplayerEnvironment") && config.soloEnvironment && lightPairOpt.has_value())
         {
             auto lightPair = lightPairOpt.value();
 
             // DEBUG("CHECK BACKTRACE FOR CHROMA PATCH");
             // Paper::Logger::Backtrace(MOD_ID, 10);
 
-            DEBUG("Preventing early TrackLaneRing {} injection, go name: {}, parent go name: {}", lightPair->name, lightPair->gameObject->name, lightPair->transform->parent->gameObject->name);
-            lightPair->transform->parent->gameObject->SetActive(false);
-            return false;
+            if (_chromaInjected) {
+                DEBUG("Preventing early TrackLaneRing {} injection, go name: {}, parent go name: {}", lightPair->name, lightPair->gameObject->name, lightPair->transform->parent->gameObject->name);
+                lightPair->transform->parent->gameObject->SetActive(false);
+                return false;
+            } else {
+                DEBUG("Not preventing injection for LightPairRotationEventEffect {}", lightPair->name);
+            }
         }
         return true;
     }
@@ -264,7 +296,7 @@ namespace MultiplayerExtensions::Patchers {
 
                     for (auto rings : trackLaneRingManager->Rings)
                     {
-                        if (!rings || !rings->gameObject->name.ends_with("(Chroma)")) continue;
+                        if (!rings) continue;
 
                         DEBUG("Fixing chroma injection and enabling go {}", rings->gameObject->name);
                         ListW<UnityW<UnityEngine::MonoBehaviour>> injectables = ListW<UnityW<UnityEngine::MonoBehaviour>>::New();

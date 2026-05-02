@@ -5,7 +5,7 @@
   "info": {
     "name": "MultiplayerExtensions",
     "id": "multiplayer-extensions",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "url": "https://github.com/EnderdracheLP/MultiplayerExtensions.Quest",
     "additionalData": {
       "overrideSoName": "libmpex.so",
@@ -32,10 +32,10 @@
         "pwsh ./scripts/createqmod.ps1 MultiplayerExtensions -clean"
       ]
     },
+    "ndk": "^27.2.12479018",
     "qmodIncludeDirs": [],
     "qmodIncludeFiles": [],
-    "qmodOutput": null,
-    "ndk": "^27.2.12479018"
+    "qmodOutput": null
   },
   "dependencies": [
     {
@@ -94,6 +94,11 @@
     {
       "id": "sombrero",
       "versionRange": "^0.1.42",
+      "additionalData": {}
+    },
+    {
+      "id": "songcore",
+      "versionRange": "^1.1.24",
       "additionalData": {}
     }
   ]

@@ -5,6 +5,7 @@
 #include "GlobalNamespace/GameScenesManager.hpp"
 #include "GlobalNamespace/EnvironmentSceneSetup.hpp"
 #include "GlobalNamespace/GameplayCoreInstaller.hpp"
+#include "GlobalNamespace/TrackLaneRingsManager.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "Zenject/InstallerBase.hpp"
@@ -20,6 +21,7 @@
 
 DECLARE_CLASS_CODEGEN_INTERFACES(MultiplayerExtensions::Patchers, EnvironmentPatcher, System::Object, System::IDisposable*) {
     DECLARE_INSTANCE_FIELD_PRIVATE(GlobalNamespace::GameScenesManager*, _scenesManager);
+    DECLARE_INSTANCE_FIELD_PRIVATE(bool, _chromaInjected);
     DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &::System::IDisposable::Dispose);
 
     DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(ListW<UnityEngine::MonoBehaviour*>, _behavioursToInject, ListW<UnityEngine::MonoBehaviour*>::New());
@@ -41,6 +43,7 @@ DECLARE_INSTANCE_FIELD_PRIVATE_DEFAULT(bool, _chromaLoaded, false);
         void PreventEnvironmentInstall(Zenject::SceneDecoratorContext* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> monoInstallers, ListW<Zenject::MonoInstaller*> installerPrefabs);
         void PreventEnvironmentActivation(ListW<StringW> scenesToPresent);
         void InjectEnvironment(Zenject::GameObjectContext* instance, ListW<UnityEngine::MonoBehaviour*> monoBehaviours);
+        void CheckTrackLaneRingInjectionStart(GlobalNamespace::TrackLaneRingsManager* instance);
         bool IHateChromaTrackLaneRingInjection(::System::Object* instance);
         void InstallEnvironment(Zenject::Context* instance, ListW<Zenject::InstallerBase*> normalInstallers, ListW<System::Type*> normalInstallerTypes, ListW<Zenject::ScriptableObjectInstaller*> scriptableObjectInstallers, ListW<Zenject::MonoInstaller*> installers, ListW<Zenject::MonoInstaller*> installerPrefabs);
         void LoveYouCountersPlus(Zenject::GameObjectContext* instance);

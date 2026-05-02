@@ -49,6 +49,15 @@ MAKE_AUTO_HOOK_MATCH(GameObjectContext_GetInjectableMonoBehaviours, &GameObjectC
     } else ERROR("EnvironmentPatcher instance is null {}", fmt::ptr(patcher));
 }
 
+MAKE_AUTO_HOOK_MATCH(TrackLaneRingsManager_Start, &TrackLaneRingsManager::Start, void, TrackLaneRingsManager* self)
+{
+    auto patcher = Patchers::EnvironmentPatcher::get_instance();
+    if (patcher) {
+        patcher->CheckTrackLaneRingInjectionStart(self);
+    }
+    TrackLaneRingsManager_Start(self);
+}
+
 MAKE_AUTO_HOOK_ORIG_MATCH(DiContainer_QueueForInject, &DiContainer::QueueForInject, void, DiContainer* self, System::Object* instance)
 {
     auto patcher = Patchers::EnvironmentPatcher::get_instance();
